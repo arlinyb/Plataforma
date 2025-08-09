@@ -1,0 +1,103 @@
+
+<!--begin::Time Graph -->
+<div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi" [ngStyle]="{'opacity': chartSectionBlock ? 0.6 : 1}">
+
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+
+                <span class="m-portlet__head-icon m--hide">
+                    <i class="flaticon-statistics"></i>
+                </span>
+
+                <a *ngIf="dateArray.length>1" id="x-btn-undo" (click)="undoTimeBase()" class=" btn btn-outline-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill "
+                    data-content="Regresar al intervalo anterior" data-placement="right" data-toggle="m-popover">
+                    <i class="la la-mail-reply"></i>
+                </a>
+
+            </div>
+
+
+        </div>
+
+        <div class="m-portlet__head-tools">
+
+                <a href="javascript:;" class="x-dropdown-menu  m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push"  data-dropdown-toggle="click" aria-expanded="true"   >
+                    <a  class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle m-portlet__nav-link--icon m-portlet__nav-link--icon-xl">
+                        <i class="la la-ellipsis-h m--font-nairu"></i>
+                    </a>
+                    <div class="m-dropdown__wrapper">
+                        <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+                        <div class="m-dropdown__inner">
+                            <div class="m-dropdown__body">
+                                <div class="m-dropdown__content">
+                                    <ul class="m-nav">
+                                        <li class="m-nav__section m-nav__section--first">
+                                            <span class="m-nav__section-text">
+                                                   Tendencia de Métricas
+                                            </span>
+                                        </li>
+                                        <li class="m-nav__item" [ngClass]="{active: selectedOption == 'totalLikes'}"  (mousedown)="changeOptionChart('totalLikes')" >
+                                            <a href="javascript:;" class="m-nav__link">
+                                                <i class="m-nav__link-icon la la-thumbs-o-up "></i>
+                                                <span class="m-nav__link-text">
+                                                    Reacciones
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="m-nav__item" [ngClass]="{active: selectedOption == 'totalComments'}" (mousedown)="changeOptionChart('totalComments')" *ngIf="indexType == 'posts'">
+                                            <a href="javascript:;" class="m-nav__link"  >
+                                                <i class="m-nav__link-icon la la-comments-o"></i>
+                                                <span class="m-nav__link-text">
+                                                    Comentarios
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="m-nav__item" [ngClass]="{active: selectedOption == 'totalShares'}" (mousedown)="changeOptionChart('totalShares')" *ngIf="indexType == 'posts'">
+                                            <a href="javascript:;" class="m-nav__link">
+                                                <i class="m-nav__link-icon la la-share-square-o"></i>
+                                                <span class="m-nav__link-text">
+                                                    Compartidos
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="m-nav__item" [ngClass]="{active: selectedOption == 'totalSources'}" (mousedown)="changeOptionChart('totalSources')">
+                                            <a href="javascript:;" class="m-nav__link">
+                                                <i class="m-nav__link-icon flaticon-users"></i>
+                                                <span class="m-nav__link-text">
+                                                    Fuentes
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="m-nav__item" [ngClass]="{active: selectedOption == 'reach'}" (mousedown)="changeOptionChart('reach')">
+                                                <a href="javascript:;" class="m-nav__link">
+                                                    <i class="m-nav__link-icon flaticon-graphic-1"></i>
+                                                    <span class="m-nav__link-text">
+                                                        Interacciones
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        <li class="m-nav__separator m-nav__separator--fit"></li>
+                                        <li class="m-nav__item">
+                                            <a href="javascript:;" class="btn btn-outline-action m-btn m-btn--pill m-btn--wide btn-sm">
+                                                Cerrar
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+        </div>
+
+    </div>
+    <div class="m-portlet__body" [ngClass]="{'x-nodata-porlet': noData}">
+        <div class="chart-container" #chartContainer></div>
+    </div>
+
+    <commons-block-ui *ngIf="chartSectionBlock"></commons-block-ui>
+
+
+</div>
+<!--end::Time Graph -->

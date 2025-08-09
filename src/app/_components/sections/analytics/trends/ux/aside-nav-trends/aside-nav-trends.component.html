@@ -1,0 +1,719 @@
+<!-- BEGIN: Left Aside -->
+<button class="m-aside-left-close  m-aside-left-close--skin-light" id="m_aside_left_close_btn" appunwraptag="">
+	<i class="la la-close"></i>
+</button>
+<div id="m_aside_left" class="m-grid__item	m-aside-left  m-aside-left--skin-light">
+	<!-- BEGIN: Brand -->
+	<div class="m-brand  m-brand--skin-light">
+		<a routerLink="/home" class="m-brand__logo">
+			<img alt="" src="./assets/images/logo/logo.png" />
+		</a>
+	</div>
+	<!-- END: Brand -->
+	<!-- BEGIN: Aside Menu -->
+	<div id="m_ver_menu" class="m-aside-menu  m-aside-menu--skin-light m-aside-menu--submenu-skin-light"
+		data-menu-vertical="true" data-menu-scrollable="true" data-menu-dropdown-timeout="500">
+		<ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow ">
+			<!-- Sources -->
+			<li data-menu-submenu-toggle="hover"
+				class="m-menu__item  m-menu__item--submenu m-menu__item--submenu-fullheight"
+				routerLinkActive="m-menu__item--open" routerLinkActiveOptions="{ exact: true }" aria-haspopup="true"
+				data-menu-dropdown-toggle-class="m-aside-menu-overlay--on">
+				<a href="#" class="m-menu__link m-menu__toggle ">
+					<i class="m-menu__link-icon flaticon-list"></i>
+					<span class="m-menu__link-text bottom-text-icon bottom-text-icon">
+						Fuentes
+					</span>
+					<i class="m-menu__ver-arrow la la-angle-right"></i>
+				</a>
+				<div class="m-menu__submenu">
+					<span class="m-menu__arrow"></span>
+					<div class="m-menu__wrapper">
+						<ul class="m-menu__subnav">
+							<li class="m-menu__item  m-menu__item--parent " routerLinkActive="m-menu__item--open"
+								routerLinkActiveOptions="{ exact: true }" aria-haspopup="true">
+								<span class="m-menu__link">
+									<span class="m-menu__link-text">
+										Fuentes
+									</span>
+								</span>
+							</li>
+							<li class="m-menu__section">
+								<h4 class="m-menu__section-text">
+									Recomendadas
+								</h4>
+								<i class="m-menu__section-icon flaticon-more-v3"></i>
+							</li>
+							<li class="m-menu__section" *ngIf="sources != undefined">
+								<div class="row m--margin-bottom-10"
+									*ngFor="let source of topSourcesFB | orderBy: 'doc_count' : true; let i=index">
+									<div class="col-10 col-xs-8">
+										<div class="m-list-search x-sources-list ">
+											<div class="m-list-search__results">
+
+
+												<a class="m-list-search__result-item" popoverTitle="{{source.key }}" triggers="hover"
+												ngbPopover=" {{source.doc_count | shortNumber }} comentarios">
+													<span class="m-list-search__result-item-pic">
+														<img class="m--img-rounded" src="{{source.info.picture}}"
+															title="">
+													</span>
+													<label for="" class="namefont " >{{(source.key.length
+														< 20) ? (source.key) :(source.key | slice:0:20 )+ '...' }}</label>
+
+													<div class="progress x-progress--lg">
+														<div placement="bottom" triggers="hover"
+															ngbPopover="{{source.doc_count/hits | percent:'1.0-2' }}"
+															class="progress-bar m--bg-nairu" role="progressbar"
+															[ngStyle]="{'width':+(source.doc_count*(100/hits)) + '%' }">
+														</div>
+														<div placement="bottom" triggers="hover"
+															class="progress-bar x-progress-bar-color-unmark m--font-nairu"
+															role="progressbar"
+															[ngStyle]="{'width':+(100-source.doc_count*(100/hits)) + '%' }">
+															{{source.doc_count/hits | percent:'1.0-2' }}
+														</div>
+													</div>
+												</a>
+
+
+
+											</div>
+										</div>
+
+
+									</div>
+									<div class="col-2 col-xs-4 x-center-checkbox">
+										<div class="m-radio-list">
+
+											<label class="m-checkbox x-sources-checkbox">
+												<input name="source-top" type="checkbox" value="1"
+													(change)="selectSource(source.details.hits.hits[0]._source.idOrigin,$event.target.checked)">
+												<span></span>
+											</label>
+
+
+										</div>
+									</div>
+
+								</div>
+								<hr class="m--margin-top-30 m--margin-bottom-20">
+
+								<div class="row" >
+
+									<div class="col-10 col-xs-8">
+										<label class="mt-2">
+											Todos
+
+										</label>
+									</div>
+									<div class="col-2 col-xs-4">
+
+										<div class="m-radio-list">
+											<label class="m-radio x-sources-checkbox">
+												<input name="source-total" type="radio" value="0"
+													(click)="clearSourcesData('all')"
+													[checked]="currentSourcesSelection.length == 0">
+												<span></span>
+											</label>
+										</div>
+									</div>
+								</div>
+
+								<div class="row m--margin-top-20 m--margin-bottom-20">
+									<div class="col-12 col-xs-12">
+										<ng-select class="x-select-checkbox-aside"
+											(add)="onAddMultiselectSource($event)"
+											(remove)="onRemoveMultiselectSource($event)" [items]="sourcesListDropdown"
+											[multiple]="true" [maxSelectedItems]="5" bindLabel="key_short"
+											[selectableGroup]="true" [closeOnSelect]="false"
+											bindValue="fuente.hits.hits[0]._source.idOrigin"
+											[(ngModel)]="selectedSourcesMultiselect">
+											<ng-template ng-option-tmp let-item="item" let-item$="item$"
+												let-index="index">
+												<input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" />
+												{{item.key }} <br>
+												<small class="m--margin-left-15">{{item.doc_count | shortNumber }}<em>
+														posts</em></small>
+											</ng-template>
+										</ng-select>
+									</div>
+								</div>
+								<div class="row m--margin-top-40">
+									<div class="col-12 col-xs-12">
+
+										<button [ngClass]="{'m-loader m-loader--right m-loader--light': loading}"
+											class="btn btn-action m-btn  btn-block" (click)="showSelectedSources()">
+											Analizar Fuentes
+										</button>
+									</div>
+								</div>
+
+
+							</li>
+
+
+						</ul>
+					</div>
+				</div>
+			</li>
+			<!-- Topics -->
+			<li data-menu-submenu-toggle="hover"
+				class="m-menu__item  m-menu__item--submenu m-menu__item--submenu-fullheight"
+				routerLinkActive="m-menu__item--open" routerLinkActiveOptions="{ exact: true }" aria-haspopup="true"
+				data-menu-dropdown-toggle-class="m-aside-menu-overlay--on">
+
+				<a href="#" class="m-menu__link m-menu__toggle ">
+					<i class="m-menu__link-icon flaticon-layers"></i>
+					<span class="m-menu__link-text bottom-text-icon bottom-text-icon">
+						Top Posts
+					</span>
+					<i class="m-menu__ver-arrow la la-angle-right"></i>
+				</a>
+				<div class="m-menu__submenu">
+					<span class="m-menu__arrow"></span>
+					<div class="m-menu__wrapper">
+						<ul class="m-menu__subnav">
+							<li class="m-menu__item  m-menu__item--parent " routerLinkActive="m-menu__item--open"
+								routerLinkActiveOptions="{ exact: true }" aria-haspopup="true">
+								<span class="m-menu__link">
+									<span class="m-menu__link-text">
+										Posts
+									</span>
+								</span>
+							</li>
+							<li class="m-menu__section">
+								<h4 class="m-menu__section-text">
+									Más Comentados
+								</h4>
+								<i class="m-menu__section-icon flaticon-more-v3"></i>
+							</li>
+							<li class="m-menu__section" *ngIf="topPostsFB != undefined">
+
+
+
+
+
+								<div class="row m--margin-bottom-20" *ngFor="let post of topPostsFB ; let i=index">
+									<div class="col-10 col-xs-8">
+
+										<div class="m-list-search x-posts-list ">
+											<div class="m-list-search__results">
+
+
+												<a class="m-list-search__result-item" href="https://www.facebook.com/{{post.key}}" target="_blank" triggers="hover"
+													popoverTitle="{{post.postmsj.hits.hits[0]._source.origin }}"
+													ngbPopover="{{post.info.created_time | timeAgoTimestamp}}">
+													<span class="m-list-search__result-item-pic">
+														<img class="x-img-post" src="{{post.info.picture }}" #img alt="" (error)="img.src = errorImage"  >
+													</span>
+													<label for=""
+														class="namefont ">{{(post.postmsj.hits.hits[0]._source.origin.length < 19) ? (post.postmsj.hits.hits[0]._source.origin) :(post.postmsj.hits.hits[0]._source.origin | slice:0:19 )+ '...' }}
+													</label>
+													<p class="x-micro-text"><b>{{post.doc_count | shortNumber}}</b> comentarios</p>
+													<p class="x-description-text" *ngIf="!post.postmsj.hits.hits[0]._sourcepostMessage.startsWith('https://');">
+														{{post.postmsj.hits.hits[0]._sourcepostMessage | slice:0:67}}...
+													</p>
+													<p class="x-description-text" *ngIf="post.postmsj.hits.hits[0]._sourcepostMessage.startsWith('https://');">
+														Link
+													</p>
+												
+												</a>
+
+											</div>
+										</div>
+
+
+									</div>
+									<div class="col-2 col-xs-4 x-center-checkbox">
+										<div class="m-radio-list">
+											<label class="m-radio x-sources-checkbox">
+												<input name="posts-top" type="radio" value="1" (change)="selectTopPost(post.key)" [checked]="post.key == currentPostId">
+												<span></span>
+											</label>
+										</div>
+									</div>
+									<div class="col-12 x-post-small">
+										<small class="">
+											</small>
+									</div>
+								</div>
+								<hr class="m--margin-top-30 m--margin-bottom-20">
+
+								<div class="row ">
+
+									<div class="col-10 col-xs-8">
+										<label class="mt-2">
+											Todos
+
+										</label>
+									</div>
+									<div class="col-2 col-xs-4">
+
+										<div class="m-radio-list">
+											<label class="m-radio x-sources-checkbox">
+												<input  name="posts-top" type="radio" value="0" checked (change)="selectTopPost('all')">
+												<span></span>
+											</label>
+										</div>
+									</div>
+								</div>
+
+
+
+							</li>
+
+
+						</ul>
+					</div>
+				</div>
+			</li>
+			<!-- Sentiment -->
+			<li data-menu-submenu-toggle="hover" class="m-menu__item  m-menu__item--submenu "
+				routerLinkActive="m-menu__item--open" routerLinkActiveOptions="{ exact: true }" aria-haspopup="true"
+				data-menu-dropdown-toggle-class="m-aside-menu-overlay--on">
+				<a href="#" class="m-menu__link m-menu__toggle ">
+					<i class="m-menu__link-icon flaticon-user-ok"></i>
+					<span class="m-menu__link-text bottom-text-icon bottom-text-icon">
+						Sentimiento
+					</span>
+					<i class="m-menu__ver-arrow la la-angle-right"></i>
+				</a>
+				<div class="m-menu__submenu ">
+					<span class="m-menu__arrow"></span>
+
+					<div class="m-menu__wrapper">
+						<ul class="m-menu__subnav">
+							<li class="m-menu__item  m-menu__item--parent m-menu__item--submenu-fullheight"
+								routerLinkActive="m-menu__item--open" routerLinkActiveOptions="{ exact: true }"
+								aria-haspopup="true">
+								<span class="m-menu__link">
+									<span class="m-menu__link-text">
+										Métricas Generales
+									</span>
+								</span>
+							</li>
+							<li class="m-menu__section">
+								<div class="row m--margin-top-10">
+									<div class="col-md-12">
+										<div class="m-radio-list ">
+											<label class="m-radio m-radio--check-bold">
+												<input name="sentiment-radio" type="radio" value="1"
+													(click)="selectGeneralMetrics('likes')" checked>
+												<a class="m--align-center d-inline-block ">
+													<i
+														class="m-menu__ver-arrow la la-thumbs-o-up m--margin-right-10"></i>
+												</a>
+												Likes
+												<span></span>
+											</label>
+											<label class="m-radio m-radio--check-bold m--margin-top-10">
+												<input name="sentiment-radio" type="radio" value="1"
+													(click)="selectGeneralMetrics('comments')">
+												<a class="m--align-center d-inline-block ">
+													<i
+														class="m-menu__ver-arrow la la-comments-o m--margin-right-10"></i>
+												</a>
+												Comentarios
+												<span></span>
+											</label>
+										</div>
+
+									</div>
+								</div>
+								<hr>
+							</li>
+
+							<li class="m-menu__item  m-menu__item--parent m-menu__item--submenu-fullheight"
+								routerLinkActive="m-menu__item--open" routerLinkActiveOptions="{ exact: true }"
+								aria-haspopup="true">
+								<span class="m-menu__link">
+									<span class="m-menu__link-text">
+										Reacciones
+									</span>
+								</span>
+							</li>
+							<li class="m-menu__section">
+								<div class="row m--margin-top-10 m--margin-bottom-10">
+									<div class="col-md-12">
+
+										<div class="m-radio-list ">
+
+											<label
+												class="m-radio m-radio--check-bold x--font-love m-list-pics m-list-pics--sm m-list-pics-rounded--sm">
+												<input name="sentiment-radio" type="radio" value="1"
+													(click)="selectReactions('love')">
+												<a class="m--align-center d-inline-block ">
+													<img src="assets/images/logo/reactions/love.png"
+														class=" m--margin-right-10" title="">
+												</a>
+												Amor
+												<span class="m--margin-top-5"></span>
+
+											</label>
+
+											<label
+												class="m--margin-top-10 m-radio m-radio--check-bold x--font-haha m-list-pics m-list-pics--sm m-list-pics-rounded--sm">
+												<input name="sentiment-radio" type="radio" value="1"
+													(click)="selectReactions('haha')">
+												<a class="m--align-center d-inline-block ">
+													<img src="assets/images/logo/reactions/haha.png"
+														class=" m--margin-right-10" title="">
+												</a>
+												Risa
+												<span class="m--margin-top-5"></span>
+											</label>
+
+
+											<label
+												class="m--margin-top-10 m-radio m-radio--check-bold x--font-wow m-list-pics m-list-pics--sm m-list-pics-rounded--sm">
+												<input name="sentiment-radio" type="radio" value="1"
+													(click)="selectReactions('wow')">
+												<a class="m--align-center d-inline-block ">
+													<img src="assets/images/logo/reactions/wow.png"
+														class=" m--margin-right-10" title="">
+												</a>
+												Sorpresa
+												<span class="m--margin-top-5"></span>
+											</label>
+											<label
+												class="m--margin-top-10 m-radio m-radio--check-bold  m-list-pics m-list-pics--sm m-list-pics-rounded--sm">
+												<input name="sentiment-radio" type="radio" value="1"
+													(click)="selectReactions('sad')">
+												<a class="m--align-center d-inline-block ">
+													<img src="assets/images/logo/reactions/sad.png"
+														class="  m--margin-right-10" title="">
+												</a>
+
+												Tristeza
+												<span class="m--margin-top-5"></span>
+											</label>
+											<label
+												class="m--margin-top-10 m-radio m-radio--check-bold x--font-angry m-list-pics m-list-pics--sm m-list-pics-rounded--sm">
+												<input name="sentiment-radio" type="radio" value="1"
+													(click)="selectReactions('angry')">
+												<a class="m--align-center d-inline-block ">
+													<img src="assets/images/logo/reactions/angry.png"
+														class="x-margin-top--5  m--margin-right-10" title="">
+												</a>
+												Enojo
+												<span class="m--margin-top-5"></span>
+											</label>
+
+										</div>
+									</div>
+								</div>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+			</li>
+			<!-- Regions -->
+			<li style="opacity: 0.35" (click)="showMessage()" class="m-menu__item  m-menu__item--submenu  "
+				data-redirect="true">
+				<a href="#" class="m-menu__link m-menu__toggle ">
+					<i class="m-menu__link-icon flaticon-map-location"></i>
+					<span class="m-menu__link-text bottom-text-icon">
+						Regiones
+					</span>
+				</a>
+				<div class="m-menu__submenu">
+
+				</div>
+			</li>
+
+			<!--li data-menu-submenu-toggle="hover" class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" data-redirect="true">
+				<a href="#" class="m-menu__link m-menu__toggle">
+					<i class="m-menu__link-icon flaticon-map-location"></i>
+					<span class="m-menu__link-text bottom-text-icon">
+						Regiones
+					</span>
+					<i class="m-menu__ver-arrow la la-angle-right"></i>
+				</a>
+				<div class="m-menu__submenu">
+					<span class="m-menu__arrow"></span>
+					<ul class="m-menu__subnav">
+						<li class="m-menu__item  m-menu__item--parent m-menu__item--submenu-fullheight" routerLinkActive="m-menu__item--open" routerLinkActiveOptions="{ exact: true }"
+						 aria-haspopup="true">
+							<span class="m-menu__link">
+								<span class="m-menu__link-text">
+									Países
+								</span>
+							</span>
+						</li>
+						<div class="container">
+							<div class="row m--margin-top-20">
+								<div class="col-md-12">
+
+									<div class="m-radio-list ">
+
+										<label class="m-radio m-radio--check-bold  m-list-pics m-list-pics--sm m-list-pics-rounded--sm">
+											<input name="region-radio" type="radio" value="1" (click)="selectRegion('costarica')">
+											<a class="m--align-center d-inline-block ">
+												<img src="assets/images/analytics/exploration/aside/regions/Costa Rica.jpg" class=" m--margin-right-10" title="">
+											</a>
+											Costa Rica
+											<span class="m--margin-top-5"></span>
+
+										</label>
+
+										<label class="m--margin-top-10 m-radio m-radio--check-bold m-list-pics m-list-pics--sm m-list-pics-rounded--sm">
+											<input name="region-radio" type="radio" value="1" (click)="selectRegion('elsalvador')">
+											<a class="m--align-center d-inline-block ">
+												<img src="assets/images/analytics/exploration/aside/regions/El Salvador.jpg" class=" m--margin-right-10" title="">
+											</a>
+											El Salvador
+											<span class="m--margin-top-5"></span>
+										</label>
+
+
+										<label class="m--margin-top-10 m-radio m-radio--check-bold  m-list-pics m-list-pics--sm m-list-pics-rounded--sm">
+											<input name="region-radio" type="radio" value="1" (click)="selectRegion('guatemala')">
+											<a class="m--align-center d-inline-block ">
+												<img src="assets/images/analytics/exploration/aside/regions/Guatemala.jpg" class=" m--margin-right-10" title="">
+											</a>
+											Guatemala
+											<span class="m--margin-top-5"></span>
+										</label>
+										<label class="m--margin-top-10 m-radio m-radio--check-bold  m-list-pics m-list-pics--sm m-list-pics-rounded--sm">
+											<input name="region-radio" type="radio" value="1" (click)="selectRegion('honduras')">
+											<a class="m--align-center d-inline-block ">
+												<img src="assets/images/analytics/exploration/aside/regions/Honduras.jpg" class="  m--margin-right-10" title="">
+											</a>
+
+											Honduras
+											<span class="m--margin-top-5"></span>
+										</label>
+										<label class="m--margin-top-10 m-radio m-radio--check-bold  m-list-pics m-list-pics--sm m-list-pics-rounded--sm">
+											<input name="region-radio" type="radio" value="1" (click)="selectRegion('panama')">
+											<a class="m--align-center d-inline-block ">
+												<img src="assets/images/analytics/exploration/aside/regions/Panama.jpg" class="x-margin-top--5  m--margin-right-10" title="">
+											</a>
+											Panama
+											<span class="m--margin-top-5"></span>
+										</label>
+										<label class="m--margin-top-10 m-radio m-radio--check-bold  m-list-pics m-list-pics--sm m-list-pics-rounded--sm">
+											<input name="region-radio" type="radio" value="1" (click)="selectRegion('republicadominicana')">
+											<a class="m--align-center d-inline-block ">
+												<img src="assets/images/analytics/exploration/aside/regions/Republica Dominicana.jpg" class="x-margin-top--5  m--margin-right-10"
+												 title="">
+											</a>
+											Rep. Dominicana
+											<span class="m--margin-top-5"></span>
+										</label>
+										<label class="m--margin-top-10 m-radio m-radio--check-bold  m-list-pics m-list-pics--sm m-list-pics-rounded--sm">
+											<input name="region-radio" type="radio" value="1" (click)="selectRegion('mexico')">
+											<a class="m--align-center d-inline-block ">
+												<img src="assets/images/analytics/exploration/aside/regions/Mexico.jpg" class="x-margin-top--10  m--margin-right-10" title="">
+											</a>
+											México
+											<span class="m--margin-top-5"></span>
+										</label>
+
+									</div>
+								</div>
+								<div class="col-md-12">
+									<hr>
+									<div class="row">
+
+										<div class="col-sm-9">
+											<div class="m-radio-list">
+												<label class="m-radio m-radio--check-bold ">
+													<input name="region-radio" type="radio" value="1" (click)="selectRegion('all')" checked> Todos
+													<span></span>
+												</label>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</ul>
+				</div>
+			</li-->
+			<!-- Content -->
+			<li data-menu-submenu-toggle="hover" class="m-menu__item  m-menu__item--submenu "
+				routerLinkActive="m-menu__item--open" routerLinkActiveOptions="{ exact: true }" aria-haspopup="true"
+				data-menu-dropdown-toggle-class="m-aside-menu-overlay--on">
+				<a href="#" class="m-menu__link m-menu__toggle">
+					<i class="m-menu__link-icon flaticon-multimedia"></i>
+					<span class="m-menu__link-text bottom-text-icon bottom-text-icon">
+						Contenido
+					</span>
+					<i class="m-menu__ver-arrow la la-angle-right"></i>
+				</a>
+				<div class="m-menu__submenu">
+					<span class="m-menu__arrow"></span>
+					<div class="m-menu__wrapper">
+
+						<ul class="m-menu__subnav">
+							<li class="m-menu__item  m-menu__item--parent" aria-haspopup="true" data-redirect="true">
+								<span class="m-menu__link">
+									<span class="m-menu__link-text">
+										Tipo de contenido
+
+									</span>
+								</span>
+							</li>
+							<li class="m-menu__section">
+
+
+								<div *ngIf="(cantText + cantAttachment )>=100 ">
+									<div class="progress m--margin-top-10">
+
+										<div aria-valuemax="100" placement="bottom" triggers="hover"
+											ngbPopover="Adjunto {{cantAttachment/hits  | percent:'1.0-2'}}"
+											class="progress-bar x--bg-fill-photo" role="progressbar"
+											[ngStyle]="{'width': cantAttachment+'%'}">
+										</div>
+
+										<div aria-valuemax="100" placement="bottom" triggers="hover"
+											ngbPopover="Texto {{cantText/hits  | percent:'1.0-2'}}"
+											class="progress-bar x--bg-fill-status" role="progressbar"
+											[ngStyle]="{'width': cantText+'%'}">
+										</div>
+
+									</div>
+								</div>
+								<div *ngIf="(cantText + cantAttachment) < 100 ">
+
+									<div class="progress m--margin-top-10">
+
+										<div aria-valuemax="100" placement="bottom" triggers="hover"
+											ngbPopover="Adjunto {{cantAttachment/hits  | percent:'1.0-2'}}"
+											class="progress-bar x--bg-fill-photo" role="progressbar"
+											[ngStyle]="{'width': cantAttachment*100/hits+'%'}">
+										</div>
+
+										<div aria-valuemax="100" placement="bottom" triggers="hover"
+											ngbPopover="Texto {{cantText/hits  | percent:'1.0-2'}}"
+											class="progress-bar x--bg-fill-status" role="progressbar"
+											[ngStyle]="{'width': cantText*100/hits+'%'}">
+										</div>
+
+									</div>
+								</div>
+
+
+
+							</li>
+							<li class="m-menu__section">
+								<div class="row">
+
+									<div class="col-9 col-xs-7">
+										<div class="m-radio-list">
+											<label class="m-radio m-radio--check-bold ">
+												<input name="example_5_1" type="radio" value="1"
+													(click)="selectContentType('attachment')">
+												<i
+													class="m-menu__ver-arrow la la-image m--margin-right-10 x--bg-fill-photo-color"></i>
+												Adjunto
+												<span></span>
+											</label>
+										</div>
+									</div>
+									<div class="col-3 col-xs-5 m--align-center">
+										<label class="x--bg-fill-photo-color">{{cantAttachment | shortNumber}}</label>
+									</div>
+								</div>
+
+
+
+								<div class="row">
+									<div class="col-9 col-xs-7">
+										<div class="m-radio-list">
+											<label class="m-radio m-radio--check-bold ">
+												<input name="example_5_1" type="radio" value="1"
+													(click)="selectContentType('text')">
+												<i
+													class="m-menu__ver-arrow la la-comment m--margin-right-10 x--bg-fill-status-color"></i>
+												Texto
+												<span></span>
+											</label>
+										</div>
+									</div>
+									<div class="col-3 col-xs-5 m--align-center">
+										<label class="x--bg-fill-status-color">{{cantText | shortNumber}}</label>
+
+									</div>
+								</div>
+
+
+
+
+
+
+								<hr>
+								<div class="row">
+
+									<div class="col-9 col-xs-7">
+										<div class="m-radio-list">
+											<label class="m-radio m-radio--check-bold ">
+												<input name="example_5_1" type="radio" value="1"
+													(click)="selectContentType('all')" checked> Todos
+												<span></span>
+											</label>
+										</div>
+									</div>
+									<div class="col-3 col-xs-5 m--align-center ">
+										<label for="">{{cantAttachment+ cantText |shortNumber}}</label>
+									</div>
+								</div>
+
+							</li>
+
+
+						</ul>
+					</div>
+				</div>
+			</li>
+			<!-- Configurations -->
+			<li data-menu-submenu-toggle="hover" class="m-menu__item  m-menu__item--submenu m-menu__item--bottom-1"
+				routerLinkActive="m-menu__item--open" routerLinkActiveOptions="{ exact: true }" aria-haspopup="true">
+				<a href="#" class="m-menu__link m-menu__toggle">
+					<i class="m-menu__link-icon flaticon-settings"></i>
+					<span class="m-menu__link-text">
+						Configuraciones
+					</span>
+					<i class="m-menu__ver-arrow la la-angle-right"></i>
+				</a>
+				<div class="m-menu__submenu m-menu__submenu--up">
+					<span class="m-menu__arrow"></span>
+					<ul class="m-menu__subnav">
+						<li class="m-menu__item  m-menu__item--parent m-menu__item--bottom-2"
+							routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"
+							aria-haspopup="true">
+							<span class="m-menu__link">
+								<span class="m-menu__link-text">
+									Ajustes
+								</span>
+							</span>
+						</li>
+
+						<li class="m-menu__item" aria-haspopup="true" data-redirect="true">
+							<a href="#" routerLinkActive="active" routerLink="/configurations/profile"
+								class="m-menu__link">
+								<i class="m-menu__link-bullet m-menu__link-bullet--line">
+									<span></span>
+								</i>
+								<span class="m-menu__link-text">
+									Perfil
+								</span>
+							</a>
+						</li>
+
+					</ul>
+				</div>
+			</li>
+
+		</ul>
+	</div>
+	<!-- END: Aside Menu -->
+</div>
+<div class="m-aside-menu-overlay"></div>
+<!-- END: Left Aside -->
+
+<div id="click-element"></div>

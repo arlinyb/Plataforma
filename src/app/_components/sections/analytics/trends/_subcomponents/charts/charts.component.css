@@ -1,0 +1,69 @@
+/*padding*/
+
+@media (max-width: 480px){
+    .m-portlet__body{
+        height: 250px !important;
+        margin-top: -10px !important;
+        padding-left:5px !important;
+        padding-right:5px !important;  
+    } 
+}
+
+@media (min-width: 1440px){
+    .m-portlet__body{
+        height: 300px !important;
+    } 
+}
+
+@media (min-width: 1920px){
+    .m-portlet__body{
+        height: 350px !important;
+    } 
+}
+
+
+.m-portlet.m-portlet--fullscreen{
+    z-index: 10;
+}
+
+#x-id-porlet-chart-label{
+    left: -40px;
+}
+
+/*Chart-Box*/
+.m-portlet__head-tools{
+    z-index: 5;
+}
+
+.m-portlet__body{
+    height: 210px;
+    padding-top: 0px !important; 
+    padding-bottom: 0px !important; 
+    padding-left:20px;
+    padding-right:20px;  
+} 
+
+.chart-container{
+    border: 0px;
+    width: 100%;
+    height: 100% !important;
+    padding: 0;
+}
+
+
+/* Chart */
+#x-btn-undo{
+    margin-left: -20px;
+    margin-right: 10px;
+}
+
+.m-portlet__head-tools a{
+    margin-top: -35px !important;
+}
+.chart-container{
+    margin-top: -35px !important;
+}
+
+.x-nodata-porlet{
+    height: 100px !important;
+}

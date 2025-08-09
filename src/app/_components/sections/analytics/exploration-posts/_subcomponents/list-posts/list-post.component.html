@@ -1,0 +1,886 @@
+<div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi"
+    [ngStyle]="{'opacity': listSectionBlock ? 0.6 : 1}">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon m--hide">
+                    <i class="flaticon-statistics"></i>
+                </span>
+
+                <div class="form-group m-form__group" [ngStyle]="{'margin-top': screenWidth > 992 ? '-29px' :'-24px' }">
+
+
+
+                    <div class="input-group x-filter-search">
+                        <ng-template #popAdvanceSeach><small><b *ngIf="!selectedAdvanceSearchTerms">Activar: </b><b
+                                    *ngIf="selectedAdvanceSearchTerms">Desactivar: </b> </small> &nbsp;&nbsp;Similaridad
+                            de Términos </ng-template>
+
+                        <div class="input-group-prepend" triggers="hover" [ngbPopover]="popAdvanceSeach"
+                            popoverTitle="Búsqueda Avanzada" container="body" *ngIf="selectedQuerySearchFilter != '*'">
+                            <span class="input-group-text">
+                                <label class="m-checkbox m-checkbox--single">
+                                    <input type="checkbox" (change)="activateAdvanceSearchTerms($event.target.checked)">
+                                    <span></span>
+                                </label>
+                            </span>
+                        </div>
+                        <tag-input [(ngModel)]='filterSearchTagsLists' (document:click)="filterTermRecover()"
+                            [editable]='false' [allowDupes]='true' [maxItems]="30" [secondaryPlaceholder]="'Buscar ...'"
+                            [placeholder]="'+ Término'" (onSelect)="filterTerm($event)" (onAdd)="addFilterTerm($event)"
+                            [onAdding]="onAdding" (onRemove)="deleteFilterTerm($event)" class="x-tag-input"
+                            [ngClass]="{'x-advance-search-active': selectedQuerySearchFilter != '*'}"></tag-input>
+
+                        <div class="input-group-append">
+                            <p class="x-parameter-advance-search"  triggers="hover" ngbPopover="Porcentaje de Similaridad" popoverTitle="Parametro - Búsqueda Avanzada" *ngIf="selectedAdvanceSearchTerms">{{minimumMatchParameterAdvanceSearch}}</p>
+
+                            <i class="la la-remove" (click)="clearFilterInput()"
+                                *ngIf="filterSearchTagsLists.length > 0"> </i>
+
+                            <button class="btn  btn-secondary m-btn x-cursor-no-click " type="button"
+                                *ngIf="screenWidth > 360">
+                                {{typeSearchFilterName}}
+                            </button>
+
+                            <button type="button" class="btn btn-action dropdown-toggle dropdown-toggle-split ml-0"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu x-filter-post " x-placement="bottom-start">
+
+
+                                <a class="dropdown-item input-cursor"
+                                    [ngClass]="{'active': typeSearchFilterOption == 'title'}"
+                                    (click)="updateTypeFilterSearchName('title')">
+                                    Título del Post
+                                </a>
+                                <a class="dropdown-item input-cursor"
+                                    [ngClass]="{'active': typeSearchFilterOption == 'post'}"
+                                    (click)="updateTypeFilterSearchName('post')">
+                                    Mensaje del Post
+                                </a>
+                                <a class="dropdown-item input-cursor"
+                                    [ngClass]="{'active': typeSearchFilterOption == 'post+'}"
+                                    (click)="updateTypeFilterSearchName('post+')">
+                                    Título del Post + Mensaje del Post
+                                </a>
+                                <div class="dropdown-divider" role="separator"></div>
+                                <a class="dropdown-item input-cursor"
+                                    [ngClass]="{'active': typeSearchFilterOption == 'all'}"
+                                    (click)="updateTypeFilterSearchName('all')">
+                                    Todo el Contenido
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <h2 class="m-portlet__head-label m-portlet__head-label--nairu">
+                    <span>
+                        <span [ngSwitch]="sortTop">
+                            <label *ngSwitchCase="'totalLikes'" class="m--margin-10 m--regular-font-size-sm1">Top
+                                Likes</label>
+                            <label *ngSwitchCase="'totalComments'" class="m--margin-10 m--regular-font-size-sm1">Top
+                                Comentarios</label>
+                            <label *ngSwitchCase="'totalShares'" class="m--margin-10 m--regular-font-size-sm1">Top
+                                Compartidos</label>
+                            <label *ngSwitchCase="'reactionsLove'" class="m--margin-10 m--regular-font-size-sm1">Top
+                                Amor</label>
+                            <label *ngSwitchCase="'reactionsHaha'" class="m--margin-10 m--regular-font-size-sm1">Top
+                                Risa</label>
+                            <label *ngSwitchCase="'reactionsWow'" class="m--margin-10 m--regular-font-size-sm1">Top
+                                Sorpresa</label>
+                            <label *ngSwitchCase="'reactionsSad'" class="m--margin-10 m--regular-font-size-sm1">Top
+                                Tristeza</label>
+                            <label *ngSwitchCase="'reactionsAngry'" class="m--margin-10 m--regular-font-size-sm1">Top
+                                Enojo</label>
+                        </span>
+
+                        <div *ngIf="jsonQueryFilter != undefined" aria-label="Button group with nested dropdown"
+                            class="btn-group d-inline-flex" role="group">
+                            <button class="m-btn btn btn-secondary " type="button" (click)="updateQty(50)"
+                                [ngClass]="{'active':jsonQueryFilter.size===50}">
+                                50
+                            </button>
+                            <button class="m-btn btn btn-secondary" type="button" (click)="updateQty(100)"
+                                [class.disabled]="hits <= 50" [ngClass]="{'active':jsonQueryFilter.size ===100}">
+                                100
+                            </button>
+                            <button class="m-btn btn btn-secondary" type="button" (click)="updateQty(150)"
+                                [class.disabled]="hits <= 100" [ngClass]="{'active':jsonQueryFilter.size ===150}">
+                                150
+                            </button>
+                            <button class="m-btn btn btn-secondary" type="button" (click)="updateQty(200)"
+                                [class.disabled]="hits <= 150" [ngClass]="{'active':jsonQueryFilter.size ===200}">
+                                200
+                            </button>
+                        </div>
+
+                    </span>
+                </h2>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="row">
+        <div class="m-portlet__head-tools x-porlet-options">
+
+            <div class="m-btn-group  btn-group" role="group" *ngIf="!ismobile">
+                <button 
+                    [ngClass]="{'active': listDisplayMode=='list','nonActive': listDisplayMode=='masonry'}"
+                    (click)="changePostDisplayMode('list')" type="button" class="m-btn btn btn-outline-action"><i
+                        class=" fa 	fa-list-ul"></i></button>
+                <button 
+                    [ngClass]="{'active': listDisplayMode=='masonry','nonActive': listDisplayMode=='list'}"
+                    (click)="changePostDisplayMode('masonry')" type="button" class="m-btn btn btn-outline-action"><i
+                        class="	fa  fa-th"></i></button>
+            </div>
+            <div class="m-btn-group  btn-group" role="group" *ngIf="ismobile">
+                <button [ngClass]="{'active': listDisplayMode=='list','nonActive': listDisplayMode=='masonry'}"
+                    (click)="changePostDisplayMode('list')" type="button" class="m-btn btn btn-outline-action"><i
+                        class=" fa 	fa-list-ul"></i></button>
+                <button [ngClass]="{'active': listDisplayMode=='masonry','nonActive': listDisplayMode=='list'}"
+                    (click)="changePostDisplayMode('masonry')" type="button" class="m-btn btn btn-outline-action"><i
+                        class="	fa  fa-th"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="m-portlet__body" *ngIf="listData != undefined">
+
+         <commons-graph-filter [localGraphFilterData]="filterData_" [localLoadingSectionBlock]="listSectionBlock"
+            (updateQuerySearchEvent)="updateQuerySearch($event)"></commons-graph-filter>
+
+        <span
+            *ngIf="(listData.length > 0 && listDisplayMode=='list') || ( listWithAttachment.length > 0  && listDisplayMode=='masonry') ">
+            <div class="m-widget3 m--margin-top-10" *ngIf="listDisplayMode=='list'">
+                <div class="m-widget3__item m--margin-top-20" *ngFor="let item of listData;let i = index ">
+                    <div class="row">
+                        <div class="col-xl-8 col-sm-12 col-xs-12">
+
+                            <div class="m-widget3__header">
+                                <span class="m-nav__link-badge">
+                                    <span class="m-badge ">
+                                        {{i+1}}
+                                    </span>
+                                </span>
+                                <div [ngSwitch]="item._source.type">
+                                    <div *ngSwitchCase="'photo'" triggers="hover" ngbPopover="Foto" placement="right"
+                                        popoverTitle="Tipo Post">
+                                        <span class="m-nav__link-badge x-icon-attachment">
+                                            <span class="m-badge x--bg-fill-photo">
+                                                <i class="la la-photo"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div *ngSwitchCase="'video'" triggers="hover" ngbPopover="Video"
+                                        popoverTitle="Tipo Post">
+                                        <span class="m-nav__link-badge x-icon-attachment">
+                                            <span class="m-badge x--bg-fill-video">
+                                                <i class="la la-file-movie-o"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div *ngSwitchCase="'link'" triggers="hover" ngbPopover="Link"
+                                        popoverTitle="Tipo Post">
+                                        <span class="m-nav__link-badge x-icon-attachment">
+                                            <span class="m-badge x--bg-fill-link">
+                                                <i class="la la-link"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div *ngSwitchCase="'status'" triggers="hover" ngbPopover="Estado"
+                                        popoverTitle="Tipo Post">
+                                        <span class="m-nav__link-badge x-icon-attachment">
+                                            <span class="m-badge x--bg-fill-status">
+                                                <i class="la la-sticky-note-o"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div *ngSwitchCase="'text'" triggers="hover" ngbPopover="Texto"
+                                        popoverTitle="Tipo Post">
+                                        <span class="m-nav__link-badge x-icon-attachment">
+                                            <span class="m-badge x--bg-fill-status">
+                                                <i class="la la-sticky-note-o"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                                <div class="m-widget3__user-img">
+                                    <img alt="" class="m-widget3__img" src="{{item._source.pictureLink}}">
+                                </div>
+                                <div class="m-widget3__user-img x-logo-network">
+                                    <img alt="" class="m-widget3__img"  *ngIf="item._source.network == 'Facebook'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Ffacebook.png?alt=media&token=2fea8154-6104-4cbe-a4bb-52438990a29c">
+                                    <img alt="" class="m-widget3__img"  *ngIf="item._source.network == 'Instagram'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Finstagram.png?alt=media&token=d39e68ad-9dee-43a6-8dcf-6fa42c3a8049">
+                                    <img alt="" class="m-widget3__img"  *ngIf="item._source.network == 'Twitter'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Ftwitter.png?alt=media&token=9247e57c-34ba-419e-a7b0-4e3c290223fe">
+                                    <img alt="" class="m-widget3__img"  *ngIf="item._source.network == 'TikTok'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Ftiktok.png?alt=media&token=0d3e8161-9eda-4585-9da1-1c72e4a238dc">
+                                    <img alt="" class="m-widget3__img"  *ngIf="item._source.network == 'YouTube'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Fyoutube.png?alt=media&token=8adc2055-2a7f-49f9-b3cd-056bcf6f1a09">
+                                    <img alt="" class="m-widget3__img"  *ngIf="item._source.network == 'Threads'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Fthreads.png?alt=media&token=bb247087-b48b-434e-985b-2de4a06d9a9c">
+
+                                </div>
+                                <div class="m-widget3__info" >
+                                    <a class="m-widget3__username x-text-overflow"
+                                        href="{{item._source.link}}" target="_blank">
+                                        {{item._source.origin }}
+                                    </a>
+                                    <br>
+                                    <span class="m-widget3__time" >
+                                        {{item._source['@timestamp'] | timeAgoTimestamp }}
+                                    </span>
+                                </div>
+
+
+                            </div>
+
+                            <div class="m-widget3__body"
+                                [ngClass]="{'x-widget3__body':item._source.attachment != null}">
+
+                                <b *ngIf="item._source.postTitle != null && item._source.postTitle.length > 30"
+                                    [ngStyle]="{'margin-top': '-10px','font-size':'0.9rem'}">{{item._source.postTitle  | slice:0:300}}</b>
+
+                                <div *ngIf="item._source.postMessage != null && item._source.postMessage != ''"
+                                    class="m--margin-top-10">
+                                    <div
+                                        *ngIf="item.accordion_activated || (item._source.postMessage.length <= 280 && item._source.postMessage.split('\n').length <= 4 ); then thenBlockMsgBody else elseBlockMsgBody">
+                                    </div>
+                                    <ng-template #thenBlockMsgBody>
+                                        <p class="m-widget3__text x--text-paragraph">{{item._source.postMessage}}</p>
+                                    </ng-template>
+                                    <ng-template #elseBlockMsgBody>
+                                        <p class="m-widget3__text x--text-paragraph">
+                                            {{item._source.postMessage | slice:0:280}} ...</p>
+                                    </ng-template>
+                                </div>
+                                <div *ngIf="item._source.postMessage == null || item._source.postMessage == '' ">
+                                    <p class="m-widget3__text x--text-paragraph"> No se publicó ningún mensaje para este
+                                        post.</p>
+
+                                </div>
+
+
+                                <div [ngSwitch]="item._source.type">
+                                    <div *ngSwitchCase="'photo'">
+                                        <span class="m-widget3__status ">
+                                            <div class="x-container ">
+                                                <img #img [src]="item._source.attachment" class="img-thumbnail"
+                                                    (error)="img.src = errorImageBroken(i)"
+                                                    data-target="#m_modal_preview_post" data-toggle="modal"
+                                                    (click)="sendLinkModal(item._id, item._source.type, item._source.link)">
+                                                <div class="x-type-attachment"
+                                                    [style.top]="img.offsetHeight>0 ? calculateTopIconHover(img) : '0px' "
+                                                    data-target="#m_modal_preview_post" data-toggle="modal"
+                                                    (click)="sendLinkModal(item._id, item._source.type, item._source.link)">
+                                                    <div *ngIf="!item._source.attachmentBroken"
+                                                        class="x-type-attachment-element"><i class="la la-photo"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div *ngSwitchCase="'video'">
+                                        <span class="m-widget3__status x-content-type ">
+                                            <a *ngIf="item._source.attachment == null"
+                                                data-target="#m_modal_preview_post" data-toggle="modal"
+                                                class=" btn btn-action m-btn m-btn--icon m-btn--icon-only m-btn--custom btn-sm m--margin-bottom-10"
+                                                placement="left" triggers="hover" ngbPopover="Ver Detalles Video"
+                                                (click)="sendLinkModal(item._id, item._source.type, item._source.link)"
+                                                href="#">
+                                                <i class="la la-file-movie-o"></i>
+                                            </a>
+                                        </span>
+                                        <span class="m-widget3__status   ">
+                                            <div class="x-container" *ngIf="item._source.attachment != null">
+                                                <img #img [src]="item._source.attachment"
+                                                    (error)="img.src = errorImageBroken(i)" class="img-thumbnail"
+                                                    data-target="#m_modal_preview_post" data-toggle="modal"
+                                                    (click)="sendLinkModal(item._id, item._source.type, item._source.link)">
+                                                <div class="x-type-attachment"
+                                                    [style.top]="img.offsetHeight>0 ? calculateTopIconHover(img): '0px' "
+                                                    data-target="#m_modal_preview_post" data-toggle="modal"
+                                                    (click)="sendLinkModal(item._id, item._source.type, item._source.link)">
+                                                    <div class="x-type-attachment-element"><i class="la la-play"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div *ngSwitchCase="'link'">
+                                        <span class="m-widget3__status x-content-type">
+                                            <a *ngIf="item._source.attachment == null"
+                                                data-target="#m_modal_preview_post" data-toggle="modal"
+                                                class=" btn btn-action m-btn m-btn--icon m-btn--icon-only m-btn--custom btn-sm m--margin-bottom-10"
+                                                placement="left" triggers="hover" ngbPopover="Ver Detalles Link"
+                                                (click)="sendLinkModal(item._id, item._source.type, item._source.link)"
+                                                href="#">
+                                                <i class="la la-link "></i>
+                                            </a>
+
+                                        </span>
+                                        <span class="m-widget3__status">
+                                            <div class="x-container" *ngIf="item._source.attachment != null">
+                                                <img #img [src]="item._source.attachment"
+                                                    (error)="img.src = errorImageBroken(i)" class="img-thumbnail"
+                                                    data-target="#m_modal_preview_post" data-toggle="modal"
+                                                    (click)="sendLinkModal(item._id, item._source.type, item._source.link)">
+                                                <div class="x-type-attachment"
+                                                    [style.top]="img.offsetHeight>0 ? calculateTopIconHover(img) : '0px' "
+                                                    data-target="#m_modal_preview_post" data-toggle="modal"
+                                                    (click)="sendLinkModal(item._id, item._source.type, item._source.link)">
+                                                    <div class="x-type-attachment-element"><i class="la la-link"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div *ngSwitchCase="'status'">
+                                        <span class="m-widget3__status x-content-type "
+                                            *ngIf="item._source.attachment == null">
+                                            <a data-target="#m_modal_preview_post" data-toggle="modal"
+                                                class=" btn btn-action m-btn m-btn--icon m-btn--icon-only m-btn--custom btn-sm m--margin-bottom-10"
+                                                placement="left" triggers="hover" ngbPopover="Ver Detalles Estado"
+                                                (click)="sendLinkModal(item._id, item._source.type, item._source.link)"
+                                                href="#">
+                                                <i class="la la-sticky-note-o"></i>
+                                            </a>
+                                        </span>
+                                        <span class="m-widget3__status " *ngIf="item._source.attachment != null">
+                                            <div class="x-container">
+                                                <img #img [src]="item._source.attachment"
+                                                    (error)="img.src = errorImageBroken(i)" class="img-thumbnail"
+                                                    data-target="#m_modal_preview_post" data-toggle="modal"
+                                                    (click)="sendLinkModal(item._id, item._source.type, item._source.link)">
+                                                <div class="x-type-attachment"
+                                                    [style.top]="img.offsetHeight>0 ? calculateTopIconHover(img) : '0px' "
+                                                    data-target="#m_modal_preview_post" data-toggle="modal"
+                                                    (click)="sendLinkModal(item._id, item._source.type, item._source.link)">
+                                                    <div class="x-type-attachment-element"><i
+                                                            class="la la-sticky-note-o"></i></div>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div *ngSwitchCase="'text'">
+                                        <span class="m-widget3__status x-content-type "
+                                            *ngIf="item._source.attachment == null">
+                                            <a data-target="#m_modal_preview_post" data-toggle="modal"
+                                                class=" btn btn-action m-btn m-btn--icon m-btn--icon-only m-btn--custom btn-sm m--margin-bottom-10"
+                                                placement="left" triggers="hover" ngbPopover="Ver Detalles Estado"
+                                                (click)="sendLinkModal(item._id, item._source.type, item._source.link)"
+                                                href="#">
+                                                <i class="la la-sticky-note-o"></i>
+                                            </a>
+                                        </span>
+                                        <span class="m-widget3__status " *ngIf="item._source.attachment != null">
+                                            <div class="x-container">
+                                                <img #img [src]="item._source.attachment"
+                                                    (error)="img.src = errorImageBroken(i)" class="img-thumbnail"
+                                                    data-target="#m_modal_preview_post" data-toggle="modal"
+                                                    (click)="sendLinkModal(item._id, item._source.type, item._source.link)">
+                                                <div class="x-type-attachment"
+                                                    [style.top]="img.offsetHeight>0 ? calculateTopIconHover(img) : '0px' "
+                                                    data-target="#m_modal_preview_post" data-toggle="modal"
+                                                    (click)="sendLinkModal(item._id, item._source.type, item._source.link)">
+                                                    <div class="x-type-attachment-element"><i
+                                                            class="la la-sticky-note-o"></i></div>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-12 col-xs-12">
+
+                            <div class="row ">
+                                <div class="col-xl-2 col-sm-12">
+                                    <span class="m-widget1__desc">
+                                        <p class="x-bold-p">Métricas:2 </p>
+                                    </span>
+                                </div>
+                                <div class="col-xl-10 col-sm-12 "
+                                    [ngClass]="{'m--align-right':screenWidth >= 1200, 'm--align-center' : screenWidth < 1200 }">
+                                    <a class="m-list-search__result-item m--margin-right-10">
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="la la-thumbs-o-up m--font-metal"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text" triggers="hover"
+                                            ngbPopover="Reacciones">
+                                            {{item._source.totalLikes | shortNumber}}
+                                        </span>
+                                    </a>
+                                    <a class="m-list-search__result-item m--margin-right-10">
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="la la-comments-o m--font-metal"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text" triggers="hover"
+                                            ngbPopover="Comentarios">
+                                            {{item._source.totalComments | shortNumber }}
+                                        </span>
+                                    </a>
+                                    <a class="m-list-search__result-item m--margin-right-10" *ngIf="item._source.network == 'Facebook' || item._source.network == 'Twitter' || item._source.network == 'TikTok'" >
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="la la-share-square-o m--font-metal"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text" triggers="hover"
+                                            ngbPopover="Shares">
+                                            {{item._source.totalShares | shortNumber }}
+                                        </span>
+                                    </a>
+
+                                    <a class="m-list-search__result-item" *ngIf="item._source.type == 'video'">
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="la la-eye m--font-metal"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text" triggers="hover"
+                                            ngbPopover="Views">
+                                            {{item._source.totalViews | shortNumber }}
+                                        </span>
+                                    </a>
+
+
+                                </div>
+                            </div>
+
+                            <div class="row"
+                                *ngIf="(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) > 0">
+                                <div class="col-xl-4 col-sm-12">
+                                    <span class="m-widget1__desc">
+                                        <p class="x-bold-p">Reacciones:</p>
+                                    </span>
+
+                                </div>
+
+                                <div class="col-xl-8 col-sm-12">
+
+                                    <div
+                                        *ngIf="(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry)>=100; then thenBlockProgress else elseBlockProgress">
+                                    </div>
+                                    <ng-template #thenBlockProgress>
+                                        <div class="progress x-progress--sm m--margin-bottom-10">
+                                            <div placement="bottom" triggers="hover"
+                                                ngbPopover="Amor {{item._source.reactionsLove/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                class="progress-bar x--bg-fill-love" role="progressbar"
+                                                [ngStyle]="{'width': item._source.reactionsLove+'%'}"></div>
+
+                                            <div placement="bottom" triggers="hover"
+                                                ngbPopover="Risa {{item._source.reactionsHaha/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                class="progress-bar x--bg-fill-haha" role="progressbar"
+                                                [ngStyle]="{'width': item._source.reactionsHaha+'%'}"></div>
+
+                                            <div placement="bottom" triggers="hover"
+                                                ngbPopover="Sorpresa {{item._source.reactionsWow/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                class="progress-bar x--bg-fill-wow" role="progressbar"
+                                                [ngStyle]="{'width': item._source.reactionsWow+'%'}"></div>
+
+
+                                            <div placement="bottom" triggers="hover"
+                                                ngbPopover="Tristeza {{item._source.reactionsSad/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                class="progress-bar x--bg-fill-sad" role="progressbar"
+                                                [ngStyle]="{'width': item._source.reactionsSad+'%'}"></div>
+
+
+                                            <div placement="bottom" triggers="hover"
+                                                ngbPopover="Enojo {{item._source.reactionsAngry/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                class="progress-bar x--bg-fill-angry" role="progressbar"
+                                                [ngStyle]="{'width': item._source.reactionsAngry+'%'}"></div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template #elseBlockProgress>
+                                        <div class="progress x-progress--sm m--margin-bottom-10">
+                                            <div placement="bottom" triggers="hover"
+                                                ngbPopover="Amor {{item._source.reactionsLove/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                class="progress-bar x--bg-fill-love" role="progressbar"
+                                                [ngStyle]="{'width': item._source.reactionsLove*100/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry)+'%'}">
+                                            </div>
+
+                                            <div placement="bottom" triggers="hover"
+                                                ngbPopover="Risa {{item._source.reactionsHaha/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                class="progress-bar x--bg-fill-haha" role="progressbar"
+                                                [ngStyle]="{'width': item._source.reactionsHaha*100/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry)+'%'}">
+                                            </div>
+
+                                            <div placement="bottom" triggers="hover"
+                                                ngbPopover="Sorpresa {{item._source.reactionsWow/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                class="progress-bar x--bg-fill-wow" role="progressbar"
+                                                [ngStyle]="{'width': item._source.reactionsWow*100/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry)+'%'}">
+                                            </div>
+
+
+                                            <div placement="bottom" triggers="hover"
+                                                ngbPopover="Tristeza {{item._source.reactionsSad/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                class="progress-bar x--bg-fill-sad" role="progressbar"
+                                                [ngStyle]="{'width': item._source.reactionsSad*100/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry)+'%'}">
+                                            </div>
+
+
+                                            <div placement="bottom" triggers="hover"
+                                                ngbPopover="Enojo {{item._source.reactionsAngry/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                class="progress-bar x--bg-fill-angry" role="progressbar"
+                                                [ngStyle]="{'width': item._source.reactionsAngry*100/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry)+'%'}">
+                                            </div>
+                                        </div>
+                                    </ng-template>
+
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="row m--margin-bottom-5">
+
+                                <div class="col-xl-2">
+                                    <a (click)="accordionElementList(item._id)"
+                                        class=" btn btn-outline-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill m-btn--air"
+                                        *ngIf="item._source.postMessage != null && ( item._source.postMessage.length>280 || item._source.postMessage.split('\n').length > 4 )">
+                                        <i *ngIf="!item.accordion_activated" class="la la-angle-down"></i>
+                                        <i *ngIf="item.accordion_activated" class="la la-angle-up"></i>
+
+                                    </a>
+                                </div>
+
+                                <div class="col-xl-10 col-sm-12  "
+                                    [ngClass]="{'m--align-right':screenWidth >= 1200, 'm--align-center' : screenWidth < 1200 }">
+
+                                    <div class="m-list-pics m-list-pics--sm m-list-pics-rounded--sm "
+                                        [ngClass]="{'m--margin-bottom-100': (screenWidth >= 1200) && ((item._source.reactionsLove+item._source.reactionsHaha+item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) == 0),'m--margin-bottom-20': (screenWidth < 1200) && ((item._source.reactionsLove+item._source.reactionsHaha+item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) == 0) }">
+                                        <a class="m--align-center d-inline-block" triggers="hover" ngbPopover="Amor"
+                                            *ngIf="item._source.reactionsLove > 0">
+                                            <img src="assets/images/logo/reactions/love.png" title="">
+                                            <p class="m-list-search__result-item-text x--font-love">
+                                                {{item._source.reactionsLove | shortNumber }}
+                                            </p>
+                                        </a>
+                                        <a class="m--align-center d-inline-block" triggers="hover" ngbPopover="Risa"
+                                            *ngIf="item._source.reactionsHaha > 0">
+                                            <img src="assets/images/logo/reactions/haha.png" title="">
+                                            <p class="m-list-search__result-item-text x--font-haha">
+                                                {{item._source.reactionsHaha | shortNumber }}
+                                            </p>
+                                        </a>
+                                        <a class="m--align-center d-inline-block" triggers="hover" ngbPopover="Sorpresa"
+                                            *ngIf="item._source.reactionsWow > 0">
+                                            <img src="assets/images/logo/reactions/wow.png" title="">
+                                            <p class="m-list-search__result-item-text x--font-wow">
+                                                {{item._source.reactionsWow | shortNumber }}
+                                            </p>
+                                        </a>
+                                        <a class="m--align-center d-inline-block" triggers="hover" ngbPopover="Tristeza"
+                                            *ngIf="item._source.reactionsSad > 0">
+                                            <img src="assets/images/logo/reactions/sad.png" title="">
+                                            <p class="m-list-search__result-item-text x--font-sad">
+                                                {{item._source.reactionsSad | shortNumber }}
+                                            </p>
+                                        </a>
+                                        <a class="m--align-center d-inline-block" triggers="hover" ngbPopover="Enojo"
+                                            *ngIf="item._source.reactionsAngry > 0">
+                                            <img src="assets/images/logo/reactions/angry.png" title="">
+                                            <p class="m-list-search__result-item-text x--font-angry">
+                                                {{item._source.reactionsAngry | shortNumber }}
+                                            </p>
+                                        </a>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="item._source.terms != undefined">
+                        <div class="col-sm-12">
+                            <div class="m-list-badge m-list-badge--light-bg  m--margin-bottom-30" *ngIf="!ismobile">
+                                <div class="m-list-badge__items"
+                                    *ngFor="let term of item._source.terms | slice:0:5 | orderBy: 'value' : true ">
+                                    <span *ngIf="term.value > 0 ">
+                                        <a class="m-list-badge__item">
+                                            {{term.term}}
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="m-list-badge m-list-badge--light-bg  m--margin-bottom-30" *ngIf="ismobile">
+                                <div class="m-list-badge__items"
+                                    *ngFor="let term of item._source.terms | slice:0:3 | orderBy: 'value' : true ">
+                                    <span *ngIf="term.value > 0 ">
+                                        <a class="m-list-badge__item">
+                                            {{term.term}}
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="m-widget3 m--margin-top-10" *ngIf="listDisplayMode=='masonry'">
+                <div class="m-widget3__item m--margin-top-20">
+                    <div class="row">
+
+                        <div class="grid">
+
+                            <div style="color:white;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
+                                facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim
+                                auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem
+                                ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet.
+                                Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae
+                                fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut
+                                felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec
+                                convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing
+                                elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae
+                                lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque
+                                maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis
+                                fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor.
+                                Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum
+                                dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris
+                                mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum
+                                odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut
+                                felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec
+                                convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing
+                                elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae
+                                lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque
+                                maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis
+                                fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor.
+                                Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum
+                                dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris
+                                mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum
+                                odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut
+                                felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec
+                                convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing
+                                elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae
+                                lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque
+                                maximus </div>
+
+
+                            <div class="item" *ngFor="let item of listWithAttachment;let i = index">
+                                <div class="content x-container-masonry">
+
+                                    <div class="card text-center border-secondary "
+                                        (click)="sendLinkModal(item._id, item._source.type, item._source.link)"
+                                        data-target="#m_modal_preview_post" data-toggle="modal">
+
+
+                                        <span class="m-nav__link-badge x-badge-mansonry">
+                                            <span class="m-badge ">
+                                                {{i+1}}
+                                            </span>
+                                        </span>
+                                        <div class="m-widget3__user-img x-logo-network-masonry">
+                                            <img alt="" class="m-widget3__img"  *ngIf="item._source.network == 'Facebook'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Ffacebook.png?alt=media&token=2fea8154-6104-4cbe-a4bb-52438990a29c">
+                                            <img alt="" class="m-widget3__img"  *ngIf="item._source.network == 'Instagram'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Finstagram.png?alt=media&token=d39e68ad-9dee-43a6-8dcf-6fa42c3a8049">
+                                            <img alt="" class="m-widget3__img"  *ngIf="item._source.network == 'Twitter'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Ftwitter.png?alt=media&token=9247e57c-34ba-419e-a7b0-4e3c290223fe">
+                                            <img alt="" class="m-widget3__img"  *ngIf="item._source.network == 'TikTok'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Ftiktok.png?alt=media&token=0d3e8161-9eda-4585-9da1-1c72e4a238dc">
+                                            <img alt="" class="m-widget3__img"  *ngIf="item._source.network == 'YouTube'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Fyoutube.png?alt=media&token=8adc2055-2a7f-49f9-b3cd-056bcf6f1a09">
+                                            <img alt="" class="m-widget3__img"  *ngIf="item._source.network == 'Threads'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Fthreads.png?alt=media&token=bb247087-b48b-434e-985b-2de4a06d9a9c">
+
+                                        </div>
+
+                                        <div [ngSwitch]="item._source.type">
+                                            <div *ngSwitchCase="'photo'">
+                                                <span class="m-nav__link-badge x-icon-attachment x-icon-masonry">
+                                                    <span class="m-badge x--bg-fill-photo">
+                                                        <i class="la la-photo"></i>
+                                                    </span>
+                                                </span>
+
+                                            </div>
+                                            <div *ngSwitchCase="'video'">
+                                                <span class="m-nav__link-badge x-icon-attachment x-icon-masonry">
+                                                    <span class="m-badge x--bg-fill-video">
+                                                        <i class="la la-file-movie-o"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div *ngSwitchCase="'link'">
+                                                <span class="m-nav__link-badge x-icon-attachment x-icon-masonry">
+                                                    <span class="m-badge x--bg-fill-link">
+                                                        <i class="la la-link"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div *ngSwitchCase="'status'">
+                                                <span class="m-nav__link-badge x-icon-attachment x-icon-masonry">
+                                                    <span class="m-badge x--bg-fill-status">
+                                                        <i class="la la-sticky-note-o"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                        <img class="card-img-top " #img (error)="img.src = errorImageBroken(i,img)"
+                                            [src]="item._source.attachment" [ngStyle]="{'min-height': '120px'}"
+                                            triggers="hover" popoverTitle="Post: {{item._source.origin}}"
+                                            ngbPopover="{{item._source.postMessage | slice:0:1024}}" placement="auto">
+
+
+                                        <div class="card-footer">
+
+                                            <small
+                                                *ngIf="item._source.postTitle != null && item._source.postTitle.length > 30"
+                                                class="x-menu-center"
+                                                [ngStyle]="{'position': 'relative','top':'-7px'}">{{item._source.postTitle | slice:0:150}}<br></small>
+
+                                            <a class="m-list-search__result-item x-icon-reaction "
+                                                *ngIf="item._source.totalLikes > 0">
+                                                <span class="m-list-search__result-item-icon">
+                                                    <i class="la la-thumbs-o-up  m--font-metal"></i>
+                                                </span>
+                                                <span class="m-list-search__result-item-text ">
+                                                    {{item._source.totalLikes | shortNumber}}
+                                                </span>
+                                            </a>
+
+                                            <a class="m-list-search__result-item x-icon-reaction"
+                                                *ngIf="item._source.totalComments > 0">
+                                                <span class="m-list-search__result-item-icon">
+                                                    <i class="la la-comments-o  m--font-metal"></i>
+                                                </span>
+                                                <span class="m-list-search__result-item-text ">
+                                                    {{item._source.totalComments | shortNumber}}
+                                                </span>
+                                            </a>
+                                            <a class="m-list-search__result-item x-icon-reaction" *ngIf="item._source.totalShares > 0">
+                                                <span class="m-list-search__result-item-icon">
+                                                    <i class="la la-share-square-o  m--font-metal"></i>
+                                                </span>
+                                                <span class="m-list-search__result-item-text ">
+                                                    {{item._source.totalShares | shortNumber}}
+                                                </span>
+                                            </a>
+
+                                            <a class="m-list-search__result-item" *ngIf="item._source.type == 'video'">
+                                                <span class="m-list-search__result-item-icon">
+                                                    <i class="la la-eye m--font-metal"></i>
+                                                </span>
+                                                <span class="m-list-search__result-item-text ">
+                                                    {{item._source.totalViews | shortNumber }}
+                                                </span>
+                                            </a>
+
+
+
+
+                                            <br>
+                                            <div class="progress x-progress--sm m--margin-bottom-10"
+                                                *ngIf="(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) > 0 ">
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Amor {{item._source.reactionsLove/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}} -- {{item._source.reactionsLove | shortNumber}}"
+                                                    class="progress-bar x--bg-fill-love" role="progressbar"
+                                                    [ngStyle]="{'width': item._source.reactionsLove*100/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry)+'%'}">
+                                                </div>
+
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Risa {{item._source.reactionsHaha/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                    class="progress-bar x--bg-fill-haha" role="progressbar"
+                                                    [ngStyle]="{'width': item._source.reactionsHaha*100/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry)+'%'}">
+                                                </div>
+
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Sorpresa {{item._source.reactionsWow/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                    class="progress-bar x--bg-fill-wow" role="progressbar"
+                                                    [ngStyle]="{'width': item._source.reactionsWow*100/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry)+'%'}">
+                                                </div>
+
+
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Tristeza {{item._source.reactionsSad/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                    class="progress-bar x--bg-fill-sad" role="progressbar"
+                                                    [ngStyle]="{'width': item._source.reactionsSad*100/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry)+'%'}">
+                                                </div>
+
+
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Enojo {{item._source.reactionsAngry/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                    class="progress-bar x--bg-fill-angry" role="progressbar"
+                                                    [ngStyle]="{'width': item._source.reactionsAngry*100/(item._source.reactionsLove + item._source.reactionsHaha + item._source.reactionsWow+item._source.reactionsSad+item._source.reactionsAngry)+'%'}">
+                                                </div>
+                                            </div>
+                                            <small
+                                                *ngIf="!ismobile">{{item._source['@timestamp'] | timeAgoTimestamp}}</small>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet ">
+                <div class="m-portlet__body m--margin-top-60" [ngStyle]="{'padding': '0px'}">
+                    <!--begin::Widget 7-->
+
+                    <div class="m-widget7" *ngIf="jsonQueryFilter != undefined">
+
+                        <div class="m-widget7__button" *ngIf="jsonQueryFilter.size < 200 && hits> jsonQueryFilter.size">
+                            <button class="m-btn  btn btn-action btn-block" type="button" (click)="IncrementQty()">Ver
+                                más</button>
+                        </div>
+
+                        <div class="m-widget7__button" *ngIf="jsonQueryFilter.size == 200">
+                            <button class="m-btn  btn btn-action btn-block" (click)="updateQty(50)" type="button">Ver
+                                los 50 más relevantes </button>
+                        </div>
+                    </div>
+                    <!--end::Widget 7-->
+                </div>
+            </div>
+        </span>
+
+        <div class="m-portlet  m-portlet--bordered-semi m-portlet--full-height x-no-info"
+            *ngIf="(listData.length == 0 && listDisplayMode=='list') || ( listWithAttachment.length == 0  && listDisplayMode=='masonry') ">
+            <div class="m-portlet__body">
+                <!--begin::Widget 7-->
+                <div class="m-widget7 " *ngIf="!listSectionBlock">
+                    <div class="m-widget7__desc">
+                        No se han publicado "posts" bajo los parametros de busqueda en las fuentes de información
+                        disponibles.
+                    </div>
+                    <div class="m-widget7__user">
+
+                        <div class="m-widget7__info">
+
+                            <!--span class="m-widget7__time">
+                               Búsqueda:  <b>{{searchTerm}}</b>
+                            </span-->
+                        </div>
+                    </div>
+
+                </div>
+                <div class="m-widget7 " *ngIf="listSectionBlock">
+                    <div class="m-widget7__desc">
+                    </div>
+                    <div class="m-widget7__user">
+                        <div class="m-widget7__info">
+                            <span class="m-widget7__time">
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <!--end::Widget 7-->
+            </div>
+        </div>
+
+
+    </div>
+
+    <commons-block-ui *ngIf="listSectionBlock"></commons-block-ui>
+
+</div>
+
+<common-modal-preview [localModalPreview]="modalMessage"></common-modal-preview>

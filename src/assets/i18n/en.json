@@ -1,0 +1,16 @@
+{
+  "_comment-AUTH":"Login Page *****************************************************************************************************",
+
+  "AUTH": {
+    "LANGUAJE-NAV": {
+      "TITLE": "Language",
+      "SPANISH": "Spanish (es)",
+      "ENGLISH": "English (en)"
+    }
+  },
+
+  "HOME": {
+    "TITLE": "Hello Angular with ngx-translate!",
+    "SELECT": "Cambiar texto"
+  }
+}

@@ -1,0 +1,121 @@
+<div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+
+  <app-aside-nav-reports></app-aside-nav-reports>
+
+  <!--Begin::Section-->
+  <div class="m-grid__item m-grid__item--fluid m-wrapper">
+    <!-- BEGIN: Subheader -->
+    <div class="m-subheader ">
+      <div class="d-flex align-items-center">
+        <div class="mr-auto">
+          <h3 class="m-subheader__title m-subheader__title--separator">
+            Reportes
+          </h3>
+          <ul class="m-subheader__breadcrumbs m-nav m-nav--inline" *ngIf="!ismobile">
+            <li class="m-nav__item m-nav__item--home">
+              <a href="#" routerLink="/home" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+              </a>
+            </li>
+            <li class="m-nav__separator">
+              -
+            </li>
+            <li class="m-nav__item">
+              <a class="m-nav__link">
+                <span class="m-nav__link-text">
+                  {{current_report.name}}
+                </span>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+      <ul class="m-subheader__breadcrumbs m-nav m-nav--inline" *ngIf="ismobile">
+        <li class="m-nav__item m-nav__item--home">
+          <a href="#" routerLink="/home" class="m-nav__link m-nav__link--icon">
+            <i class="m-nav__link-icon la la-home"></i>
+          </a>
+        </li>
+        <li class="m-nav__separator">
+          -
+        </li>
+        <li class="m-nav__item">
+          <a class="m-nav__link">
+            <span class="m-nav__link-text">
+                {{current_report.name}}
+              </span>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+    <!-- END: Subheader -->
+
+
+
+    <!--Begin::Sub-Section-->
+    <div class="m-content">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="m-portlet m-portlet--bordered-semi">
+            <div class="m-portlet__head">
+
+              <div class="m-portlet__head-tools" *ngIf="reportList.length > 0">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-outline-nairu  m-btn--sm x-cursor-no-click">{{current_report.name}} </button>
+                  <button type="button" class="btn btn-action dropdown-toggle dropdown-toggle-split m-btn--sm"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <span  *ngFor="let item of reportList;">
+                        <a class="dropdown-item" (click)="changeReport(item)">
+                            {{item.name}}
+                          </a>
+                    </span>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="m-portlet__body m--padding-10 x-body-report" *ngIf="reportList.length > 0" style="height:65vh"> 
+
+              <iframe allowtransparency="true" style="background-color: #FFFFFF !important;" width="100%" height="100%"
+                [src]="current_urlReport" ></iframe>
+
+            </div>
+            <div class="m-portlet__body" *ngIf="reportNull">
+              <!--begin::Widget 7-->
+              <div class="m-widget7 " >
+                  <div class="m-widget7__desc">
+                      No hay reportes disponibles para esta investigación.
+                  </div>
+                  <div class="m-widget7__user">
+
+                      <div class="m-widget7__info">
+
+                          <span class="m-widget7__time">
+                             Investigacion:  <b>{{current_l1}}</b>
+                          </span>
+                      </div>
+                  </div>
+
+              </div>
+  
+              <!--end::Widget 7-->
+          </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--End::Sub-Section-->
+
+
+  </div>
+  <!-- End:: Section -->
+
+
+</div>

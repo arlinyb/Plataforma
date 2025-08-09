@@ -1,0 +1,58 @@
+.blockUI.blockOverlay{
+    
+     z-index: 5;
+                        border: none;
+                        margin-left: 15px;
+                        margin-top: 19px;
+                        padding: 0px;
+                        width: calc(100% - 30px);
+                        height: calc(100% - 19px);
+                        top: 0px;
+                        left: 0px;
+                        opacity: 0;
+                        cursor: wait;
+                    
+                    
+                        position: absolute;
+                    }
+.blockMsg.blockElement{  
+                         left: 50%;
+                        transform: translateX(-50%);
+                        -webkit-transform: translateX(-50%);
+                        z-index: 15;
+                        position: absolute;
+                        padding: 0px;
+                        top: 48%;
+                        text-align: center;
+                        color: rgb(0, 0, 0);
+                        border: 0px;
+                        cursor: wait;
+}
+
+
+.m-loader.m-loader--lg:before {
+    border-top-color: #eda374;
+  }
+
+  .m-blockui> span {
+    display: initial;
+    padding: 0px 45px !important;
+}
+
+  .m-blockui>span>.m-loader, .m-blockui>span>.m-spinner{
+    margin-right: 0px !important;
+
+  }
+
+  .m-blockui>span {
+  
+    font-size: 1.1rem;
+
+}
+
+  .m-blockui {
+    background: #fff;
+    -webkit-box-shadow: 0 0 30px 1px rgba(69, 65, 78, .2);
+    -moz-box-shadow: 0 0 30px 1px rgba(69, 65, 78, .2);
+    box-shadow: 0 0 30px 1px rgba(69, 65, 78, .2);
+}

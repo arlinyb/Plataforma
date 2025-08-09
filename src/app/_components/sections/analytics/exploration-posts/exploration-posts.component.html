@@ -1,0 +1,412 @@
+<div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+
+
+    <!--Begin::Section-->
+    <app-aside-nav-exploration-posts [localAsideData]="asideDate_" (updateQueryFilterEvent)="updateQueryFilter($event)">
+    </app-aside-nav-exploration-posts>
+
+
+    <div class="m-grid__item m-grid__item--fluid m-wrapper">
+
+
+        <!-- BEGIN: Subheader -->
+
+        <div class="m-subheader ">
+            <div class="d-flex align-items-center">
+                <div class="mr-auto">
+                    <h3 class="m-subheader__title m-subheader__title--separator">
+                        Exploración <br> <small>Posts</small>
+                    </h3>
+                    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline" *ngIf="!ismobile">
+                        <li class="m-nav__item m-nav__item--home">
+                            <a href="#" routerLink="/home" class="m-nav__link m-nav__link--icon">
+                                <i class="m-nav__link-icon la la-home"></i>
+                            </a>
+                        </li>
+                        <li class="m-nav__separator">
+                            -
+                        </li>
+                        <li class="m-nav__item">
+                            <a class="m-nav__link">
+                                <span class="m-nav__link-text">
+                                    {{current_l2}}
+                                </span>
+                            </a>
+                        </li>
+                        <li class="m-nav__separator">
+                            -
+                        </li>
+                        <li class="m-nav__item">
+                            <a class="m-nav__link">
+                                <span class="m-nav__link-text">
+                                    {{current_l3}}
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <commons-date-filter [localDatePickerData]="dateData_"
+                    (updateQueryFilterEvent)="updateQueryFilter($event)"></commons-date-filter>
+
+            </div>
+            <ul class="m-subheader__breadcrumbs m-nav m-nav--inline" *ngIf="ismobile">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="#" routerLink="/home" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon la la-home"></i>
+                    </a>
+                </li>
+                <li class="m-nav__separator">
+                    -
+                </li>
+                <li class="m-nav__item">
+                    <a class="m-nav__link">
+                        <span class="m-nav__link-text">
+                            {{current_l2}}
+                        </span>
+                    </a>
+                </li>
+                <li class="m-nav__separator">
+                    -
+                </li>
+                <li class="m-nav__item">
+                    <a class="m-nav__link">
+                        <span class="m-nav__link-text">
+                            {{current_l3}}
+                        </span>
+                    </a>
+                </li>
+
+
+            </ul>
+        </div>
+        <!-- END: Subheader -->
+
+
+
+
+
+        <!--Begin::Sub-Section-->
+        <div class="m-content">
+
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <app-charts-timeline [localChartData]="chartsTimelineData_" [localLoadingSectionBlock]="chartTimelineSectionBlock_" (updateQueryFilterEvent)="updateQueryFilter($event)">
+                    </app-charts-timeline>
+                </div>
+            </div>
+
+
+
+            <div class="row" *ngIf="hitsData_ != undefined">
+
+                <div class="col-lg-12">
+                    <div class="m-portlet x-highlights-porlet">
+                        <div class="m-portlet__body  m-portlet__body--no-padding x-porlet-kpi">
+                            <div class="row m-row--no-padding m-row--col-separator-xl" >
+                                <div class="col-md-6 col-lg-6 col-xl-3">
+                                    <!--begin::Total Profit-->
+                                    <div class="m-widget24">
+                                        <div class="m-widget24__item">
+                                            <h4 class="m-widget24__title">
+                                                Total Posts
+                                            </h4><br>
+                                            <span class="m-widget24__desc">
+                                                Menciones
+                                            </span>
+                                            <span class="m-widget24__stats m--font-secondary">
+                                                {{hitsData_.data.hits.value | shortNumber }}
+                                            </span>
+                                            <div class="m--space-10"></div>
+
+                                        </div>
+                                        <hr >
+                                        <div class="m-widget24__item">
+                                            <h4 class="m-widget24__title">
+                                                Influenciadores 
+                                            </h4><br>
+                                            <span class="m-widget24__desc">
+                                                Fuentes Relevantes 
+                                            </span>
+                                            <span class="m-widget24__stats m--font-secondary">
+                                                {{hitsData_.data.totalSources.value | shortNumber }}
+                                            </span>
+                                            <div class="m--space-10"></div>
+
+                                        </div>
+                                    </div>
+                                    <!--end::Total Profit-->
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-xl-3 " id="x-col-top-sources">
+
+                                    <div class="m-list-timeline  ">
+
+                                        <div class="m-list-timeline__items">
+                                            <span *ngFor="let source of hitsData_.data.topSources">
+                                                <div class="m-list-timeline__item"  popoverTitle="{{source.key }}" triggers="hover"
+												ngbPopover=" {{source.doc_count | shortNumber }} posts">
+                                                    <span class="m-list-timeline__badge" [ngClass]="{'m-list-timeline__badge--success':(source.reactionsLove.value + source.reactionsWow.value) > (source.reactionsHaha.value + source.reactionsSad.value + source.reactionsAngry.value),'m-list-timeline__badge--danger':(source.reactionsLove.value + source.reactionsWow.value) < (source.reactionsHaha.value + source.reactionsSad.value + source.reactionsAngry.value) }">
+                                                        <img class="img-sources-list" [src]="source.info.picture" *ngIf="source.info != undefined" title="">
+                                                    </span>
+                                                    <span class="m-list-timeline__icon "></span>
+                                                    <span class="m-list-timeline__text x-text-overflow">
+                                                        {{source.key}}
+                                                    </span>
+                                                    <span class="m-list-timeline__time" triggers="hover"
+                                                    ngbPopover="Total Reacciones">
+                                                        <i class="la la-thumbs-o-up m--font-metal"></i>
+                                                        {{source.totalLikes.value | shortNumber }}
+                                                    </span>
+
+                                                </div>
+                                                <div class="progress x-progress-sources"  *ngIf="source.reactionsLove.value + source.reactionsHaha.value + source.reactionsWow.value+source.reactionsSad.value+source.reactionsAngry.value > 100">
+                                                    <div class="progress-bar x--bg-fill-love" role="progressbar"
+                                                        [ngStyle]="{'width': source.reactionsLove.value+'%'}">
+                                                    </div>
+
+                                                    <div class="progress-bar x--bg-fill-haha" role="progressbar"
+                                                        [ngStyle]="{'width': source.reactionsHaha.value+'%'}">
+                                                    </div>
+
+                                                    <div class="progress-bar x--bg-fill-wow" role="progressbar"
+                                                        [ngStyle]="{'width': source.reactionsWow.value+'%'}">
+                                                    </div>
+
+
+                                                    <div class="progress-bar x--bg-fill-sad" role="progressbar"
+                                                        [ngStyle]="{'width': source.reactionsSad.value+'%'}">
+                                                    </div>
+
+
+                                                    <div class="progress-bar x--bg-fill-angry" role="progressbar"
+                                                        [ngStyle]="{'width': source.reactionsAngry.value+'%'}">
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="progress x-progress-sources" *ngIf="source.reactionsLove.value + source.reactionsHaha.value + source.reactionsWow.value+source.reactionsSad.value+source.reactionsAngry.value < 100">
+                                                    <div class="progress-bar x--bg-fill-love" role="progressbar"
+                                                        [ngStyle]="{'width': source.reactionsLove.value*100/(source.reactionsLove.value + source.reactionsHaha.value + source.reactionsWow.value+source.reactionsSad.value+source.reactionsAngry.value)+'%'}" >
+                                                    </div>
+
+                                                    <div class="progress-bar x--bg-fill-haha" role="progressbar"
+                                                        [ngStyle]="{'width': source.reactionsHaha.value*100/(source.reactionsLove.value + source.reactionsHaha.value + source.reactionsWow.value+source.reactionsSad.value+source.reactionsAngry.value)+'%'}">
+                                                    </div>
+
+                                                    <div class="progress-bar x--bg-fill-wow" role="progressbar"
+                                                        [ngStyle]="{'width': source.reactionsWow.value*100/(source.reactionsLove.value + source.reactionsHaha.value + source.reactionsWow.value+source.reactionsSad.value+source.reactionsAngry.value)+'%'}">
+                                                    </div>
+
+
+                                                    <div class="progress-bar x--bg-fill-sad" role="progressbar"
+                                                        [ngStyle]="{'width': source.reactionsSad.value*100/(source.reactionsLove.value + source.reactionsHaha.value + source.reactionsWow.value+source.reactionsSad.value+source.reactionsAngry.value)+'%'}">
+                                                    </div>
+
+
+                                                    <div class="progress-bar x--bg-fill-angry" role="progressbar"
+                                                        [ngStyle]="{'width': source.reactionsAngry.value*100/(source.reactionsLove.value + source.reactionsHaha.value + source.reactionsWow.value+source.reactionsSad.value+source.reactionsAngry.value)+'%'}">
+                                                    </div>
+
+                                                </div>
+                                            </span>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-xl-3">
+                                    <!--begin::New Orders-->
+                                    <div class="m-widget24">
+                                        <div class="m-widget24__item">
+                                            <h4 class="m-widget24__title x-text-overflow">
+                                                    Métricas  </h4><br>
+                                            <span class="m-widget24__desc">
+                                                  Interacciones
+                                            </span>
+                                            <span class="m-widget24__stats m--font-secondary x--label-hits">
+                                                {{hitsData_.data.generalMetrics.totalLikes.value + hitsData_.data.generalMetrics.totalComments.value + hitsData_.data.generalMetrics.totalShares.value | shortNumber}}
+                                            </span>
+                                            <div class="m--space-5"></div>
+                                            <div class="progress m-progress--sm ">
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Total Reacciones {{hitsData_.data.generalMetrics.totalLikes.value/(hitsData_.data.generalMetrics.totalLikes.value + hitsData_.data.generalMetrics.totalComments.value + hitsData_.data.generalMetrics.totalShares.value) | percent:'1.0-2'}}"
+                                                    class="progress-bar x--bg-fill-like" role="progressbar"
+                                                    [ngStyle]="{'width': hitsData_.data.generalMetrics.totalLikes.value+'%'}">
+                                                </div>
+
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Total Comentarios {{hitsData_.data.generalMetrics.totalComments.value/(hitsData_.data.generalMetrics.totalLikes.value + hitsData_.data.generalMetrics.totalComments.value + hitsData_.data.generalMetrics.totalShares.value) | percent:'1.0-2'}}"
+                                                    class="progress-bar x--bg-fill-comment" role="progressbar"
+                                                    [ngStyle]="{'width': hitsData_.data.generalMetrics.totalComments.value+'%'}">
+                                                </div>
+
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Total Compartidos {{hitsData_.data.generalMetrics.totalShares.value/(hitsData_.data.generalMetrics.totalLikes.value + hitsData_.data.generalMetrics.totalComments.value + hitsData_.data.generalMetrics.totalShares.value) | percent:'1.0-2'}}"
+                                                    class="progress-bar x--bg-fill-share" role="progressbar"
+                                                    [ngStyle]="{'width': hitsData_.data.generalMetrics.totalShares.value+'%'}">
+                                                </div>
+
+                                                
+
+                                            </div>
+                                            <div
+                                                class="m-list-pics m-list-pics--sm m-list-pics-rounded--sm m--align-center">
+                                                <div class="x-center-list-items ">
+                                                    <a class="m--align-center d-inline-block m--margin-right-15" triggers="hover"
+                                                    ngbPopover="Reacciones">
+                                                    <i class="la la-thumbs-up m--font-metal"></i>
+                                                    <p class="m-list-search__result-item-text x--font-like">
+                                                        {{hitsData_.data.generalMetrics.totalLikes.value | shortNumber }}
+                                                    </p>
+                                                </a>
+                                                <a class="m--align-center d-inline-block "
+                                                    triggers="hover" ngbPopover="Comentarios">
+                                                    <i class="la la-comments m--font-metal"></i>
+                                                    <p class="m-list-search__result-item-text x--font-comment">
+                                                        {{hitsData_.data.generalMetrics.totalComments.value | shortNumber }}
+                                                    </p>
+                                                </a>
+                                                <a class="m--align-center d-inline-block m--margin-left-15" triggers="hover" ngbPopover="Compartidos">
+                                                    <i class="la la-share-square m--font-metal"></i>
+                                                    <p class="m-list-search__result-item-text x--font-share">
+                                                        {{hitsData_.data.generalMetrics.totalShares.value | shortNumber }}
+                                                    </p>
+                                                </a> 
+
+                                                <a class="m--align-center d-inline-block m--margin-left-15" triggers="hover" ngbPopover="Views">
+                                                    <i class="la la-eye m--font-metal"></i>
+                                                    <p class="m-list-search__result-item-text x--font-view">
+                                                        {{hitsData_.data.generalMetrics.totalViews.value | shortNumber }}
+                                                    </p>
+                                                </a> 
+
+                                                <!--a class="m--align-center d-inline-block m--margin-left-15" triggers="hover" ngbPopover="Alcance Estimado">
+                                                    <i class="la la-users m--font-metal"></i>
+                                                    <p class="m-list-search__result-item-text ">
+                                                        {{hitsData_.data.generalMetrics.totalLikes.value*25 + hitsData_.data.generalMetrics.totalComments.value*50  +hitsData_.data.generalMetrics.totalShares.value*75 | shortNumber }}
+                                                    </p>
+                                                </a --> 
+                                            </div>
+                                                
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::New Orders-->
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-xl-3">
+                                    <!--begin::New Users-->
+                                    <div class="m-widget24">
+                                        <div class="m-widget24__item">
+                                            <h4 class="m-widget24__title"  [ngStyle]="{'margin-bottom': '0.9rem'}">
+                                                    Reacciones
+                                            </h4><br>
+                                            <span class="m-widget24__desc">
+                                                    Sentimiento
+                                            </span>
+                                            <span class="m-widget24__stats m--font-secondary">
+                                                {{hitsData_.data.reactions.reactionsLove.value + hitsData_.data.reactions.reactionsHaha.value + hitsData_.data.reactions.reactionsWow.value+hitsData_.data.reactions.reactionsSad.value+hitsData_.data.reactions.reactionsAngry.value | shortNumber }}
+                                            </span>
+                                            <div class="m--space-5"></div>
+
+                                            <div class="progress m-progress--sm ">
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Total Amor {{hitsData_.data.reactions.reactionsLove.value/(hitsData_.data.reactions.reactionsLove.value + hitsData_.data.reactions.reactionsHaha.value + hitsData_.data.reactions.reactionsWow.value+hitsData_.data.reactions.reactionsSad.value+hitsData_.data.reactions.reactionsAngry.value) | percent:'1.0-2'}}"
+                                                    class="progress-bar x--bg-fill-love" role="progressbar"
+                                                    [ngStyle]="{'width': hitsData_.data.reactions.reactionsLove.value+'%'}">
+                                                </div>
+
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Total Risa {{hitsData_.data.reactions.reactionsHaha.value/(hitsData_.data.reactions.reactionsLove.value + hitsData_.data.reactions.reactionsHaha.value + hitsData_.data.reactions.reactionsWow.value+hitsData_.data.reactions.reactionsSad.value+hitsData_.data.reactions.reactionsAngry.value) | percent:'1.0-2'}}"
+                                                    class="progress-bar x--bg-fill-haha" role="progressbar"
+                                                    [ngStyle]="{'width': hitsData_.data.reactions.reactionsHaha.value+'%'}">
+                                                </div>
+
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Total Sorpresa {{hitsData_.data.reactions.reactionsWow.value/(hitsData_.data.reactions.reactionsLove.value + hitsData_.data.reactions.reactionsHaha.value + hitsData_.data.reactions.reactionsWow.value+hitsData_.data.reactions.reactionsSad.value+hitsData_.data.reactions.reactionsAngry.value) | percent:'1.0-2'}}"
+                                                    class="progress-bar x--bg-fill-wow" role="progressbar"
+                                                    [ngStyle]="{'width': hitsData_.data.reactions.reactionsWow.value+'%'}">
+                                                </div>
+
+
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Total Tristeza {{hitsData_.data.reactions.reactionsSad.value/(hitsData_.data.reactions.reactionsLove.value + hitsData_.data.reactions.reactionsHaha.value + hitsData_.data.reactions.reactionsWow.value+hitsData_.data.reactions.reactionsSad.value+hitsData_.data.reactions.reactionsAngry.value) | percent:'1.0-2'}}"
+                                                    class="progress-bar x--bg-fill-sad" role="progressbar"
+                                                    [ngStyle]="{'width': hitsData_.data.reactions.reactionsSad.value+'%'}">
+                                                </div>
+
+
+                                                <div placement="bottom" triggers="hover"
+                                                    ngbPopover="Total Enojo {{hitsData_.data.reactions.reactionsAngry.value/(hitsData_.data.reactions.reactionsLove.value + hitsData_.data.reactions.reactionsHaha.value + hitsData_.data.reactions.reactionsWow.value+hitsData_.data.reactions.reactionsSad.value+hitsData_.data.reactions.reactionsAngry.value) | percent:'1.0-2'}}"
+                                                    class="progress-bar x--bg-fill-angry" role="progressbar"
+                                                    [ngStyle]="{'width': hitsData_.data.reactions.reactionsAngry.value+'%'}">
+                                                </div>
+                                            </div>
+                                            <div class="m-list-pics m-list-pics--sm m-list-pics-rounded--sm m--align-center">
+                                                
+                                                <a class="m--align-center d-inline-block m--margin-right-10" triggers="hover"
+                                                    ngbPopover="Amor">
+                                                    <img src="assets/images/logo/reactions/love.png" title="">
+                                                    <p class="m-list-search__result-item-text x--font-love">
+                                                        {{hitsData_.data.reactions.reactionsLove.value| shortNumber }}
+                                                    </p>
+                                                </a>
+                                                <a class="m--align-center d-inline-block m--margin-right-10" triggers="hover"
+                                                    ngbPopover="Risa">
+                                                    <img src="assets/images/logo/reactions/haha.png" title="">
+                                                    <p class="m-list-search__result-item-text x--font-haha">
+                                                        {{hitsData_.data.reactions.reactionsHaha.value | shortNumber }}
+                                                    </p>
+                                                </a>
+                                                <a class="m--align-center d-inline-block " triggers="hover"
+                                                    ngbPopover="Sorpresa">
+                                                    <img src="assets/images/logo/reactions/wow.png" title="">
+                                                    <p class="m-list-search__result-item-text x--font-wow">
+                                                        {{hitsData_.data.reactions.reactionsWow.value | shortNumber }}
+                                                    </p>
+                                                </a>
+                                                <a class="m--align-center d-inline-block m--margin-left-10"  triggers="hover"
+                                                    ngbPopover="Tristeza">
+                                                    <img src="assets/images/logo/reactions/sad.png" title="">
+                                                    <p class="m-list-search__result-item-text x--font-sad">
+                                                        {{hitsData_.data.reactions.reactionsSad.value| shortNumber }}
+                                                    </p>
+                                                </a>
+                                                <a class="m--align-center d-inline-block  m--margin-left-10" triggers="hover"
+                                                    ngbPopover="Enojo">
+                                                    <img src="assets/images/logo/reactions/angry.png" title="">
+                                                    <p class="m-list-search__result-item-text x--font-angry">
+                                                        {{hitsData_.data.reactions.reactionsAngry.value | shortNumber }}
+                                                    </p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::New Users-->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <app-list-data [localListData]="listData_"  [localLoadingSectionBlock]="listSectionBlock_"  (updateQueryFilterEvent)="updateQueryFilter($event)"></app-list-data>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <!--End::Sub-Section-->
+
+
+</div>

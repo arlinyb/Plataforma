@@ -1,0 +1,17 @@
+.alert.m-alert--outline.alert-danger{
+    margin-left:-2%;
+    
+    width: 105%;
+
+}
+
+.alert.m-alert--outline.alert-success{
+    margin-left:-2%;
+    width: 105%;
+
+}
+
+.alert .close{
+    margin-right: -3%;
+    margin-top: -1%;
+}

@@ -1,0 +1,111 @@
+
+
+
+/*------------------------------------------------------------------------------------------------------*/
+
+
+/*Contenedor Secciones*/
+
+.m-grid__item.m-grid__item--fluid.m-grid.m-grid--ver-desktop.m-grid--desktop.m-body{
+    min-height: 100vh ;
+}
+
+
+
+/*Block UI*/
+
+.block-ui-spinner, .block-ui-template{
+    top: 50% !important;
+}
+
+
+/*Portlet Label*/
+.m-portlet__head-label--nairu{
+    text-align: center !important;
+    min-width: 185px;
+}
+
+/*Cursor*/
+.dropdown-menu .dropdown-item{
+    cursor: pointer;
+}
+
+/*input*/
+input:focus{
+    border-color: #ebedf2 !important;
+ 
+}
+
+
+.x-highlights-porlet{
+    margin-top: -2.2rem;
+    -webkit-box-shadow: 0px 1px 0px 1px rgba(69, 65, 78, 0.08);
+    box-shadow: 0px 1px 0px 1px rgba(69, 65, 78, 0.08);
+}
+.x-highlights-porlet hr{
+    opacity: 0.6;
+}
+.x-highlights-porlet #x-col-top-sources{
+    display: flex;
+    align-items: center;
+}
+
+.x-highlights-porlet .m-widget24 .m-widget24__item .m-widget24__title{
+    margin-top: 0.5rem;
+}
+
+.x-highlights-porlet .m-widget24 .m-widget24__item .m-list-pics--sm i{
+    font-size: 1.8rem;
+    margin-bottom: -10px;
+}
+
+.x-highlights-porlet .progress.m-progress--sm .progress-bar {
+    border-radius: 0px;
+}
+.x-highlights-porlet  .m-widget24 .m-widget24__item .progress{
+    margin-top: 1.14rem;
+}
+
+
+.x-highlights-porlet .m-list-timeline__items  .img-sources-list{
+    height: 24px !important;
+    right: -20px !important;
+    position: relative !important;
+}
+
+.x-highlights-porlet .m-list-timeline__items .x-progress-sources{
+    height: 2px;
+    margin-left: 20px;
+    margin-right: 0px;
+    margin-top: -4px;
+    margin-bottom: 10px;
+}
+
+.x-highlights-porlet  .m-list-timeline{
+    margin-left: 10px;
+    margin-right: 1.8rem;
+    margin-top: 5px;
+}
+
+.x-highlights-porlet  .m-list-timeline__items .m-list-timeline__item .m-list-timeline__time {
+    width: 65px;
+    padding-right: 0px;
+    font-size: 14px;
+}
+
+
+.x-highlights-porlet  .m-list-timeline__items .m-list-timeline__item .m-list-timeline__time i {
+    font-size: 1.2rem;
+}
+
+
+@media (max-width: 1200px){
+    .x-highlights-porlet .m-widget24 .m-widget24__item .m-widget24__title {
+        margin-top: 1.0rem;
+        }
+
+        .x-highlights-porlet .m-list-timeline{
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+}

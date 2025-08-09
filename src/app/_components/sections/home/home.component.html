@@ -1,0 +1,411 @@
+<div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+
+    <app-aside-nav-home></app-aside-nav-home>
+
+    <!--Begin::Section-->
+    <div class="m-grid__item m-grid__item--fluid m-wrapper">
+     
+
+
+        <!--Begin::Sub-Section-->
+        <div class="m-content">
+            <div class="row">
+
+
+
+                <div class="col-xl-4 offset-xl-0  col-lg-6 offset-lg-1  col-md-8 col-sm-12  offset-sm-0  x-home-col">
+                    <!--begin:: Widgets/Profiles-->
+
+
+
+                    <div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi " id="x-profile-selector" [ngStyle]="{'opacity': profileSelectorSectionBlock ? 0.8 : 1}">
+                        <div class="m-portlet__head ">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+
+                                    <h2 class="m-portlet__head-label m-portlet__head-label--nairu ">
+                                        <span>
+                                            <label class="m--margin-top-10 m--regular-font-size-sm1 e-head-label-creative">
+                                                Perfiles Audiencias
+                                            </label>
+                                        </span>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="m-portlet__head-tools">
+                                <div class="btn-group x-business-type" *ngIf="businessTypeOption">
+                                    <button type="button" class="btn btn-outline-nairu  m-btn--sm x-cursor-no-click">{{optionBusinessTypeName}}</button>
+                                    <button type="button" class="btn btn-action dropdown-toggle dropdown-toggle-split m-btn--sm"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+
+                                        <a class="dropdown-item" (click)="updateBusinessType('brands')">Marcas</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" (click)="updateBusinessType('politics')">Política</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__body--no-padding x-creative-padding">
+                            <!--begin::Widget 30-->
+                            <div class="m-widget30">
+
+                                <div class="m-widget_head x-widget_head">
+
+                                    <owl-carousel #owlElement class="m-widget_head-owlcarousel-items " [options]="optionsCarousel"
+                                        [items]="businessDataListFiltered" [carouselClasses]="['owl-stage']">
+                                        <span *ngFor="let business of businessDataListFiltered;let i = index;">
+                                            <div class="item m-widget_head-owlcarousel-item carousel" (click)="changeBusinessClick(i)">
+                                                <div class="img-logo">
+                                                    <img [src]="business.logo" class="avatar" alt="" [ngStyle]="{'height': '77px'}">
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </owl-carousel>
+
+
+                                </div>
+                                <div class="m-portlet__body">
+                                    <div id="x-categories">
+                                        <a class=" btn  btn-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--air   x-accordion-btn"
+                                            (click)=changeCategoriesAccordion()>
+                                            <i *ngIf="!categoriesAccordion_activated" class="la la-angle-down"></i>
+                                            <i *ngIf="categoriesAccordion_activated" class="la la-angle-up"></i>
+                                        </a>
+                                        <div class="m-scrollable" id="x-categories-list-scroll" data-scrollbar-shown="true"
+                                            [ngStyle]="{'height': !categoriesAccordion_activated ? '64px' : 'auto'}"
+                                            data-scrollable="true">
+
+
+
+                                            <div class="m-list-badge m-list-badge--light-bg">
+
+                                                <div class="m-list-badge__items">
+                                                    <span *ngFor="let category of selectedBusiness.profiles | groupBy:'category';let i = index">
+                                                        <a class="m-list-badge__item" (click)='selectCategory(category.key)'
+                                                            [ngClass]="{'active': current_l2 == category.key}">
+                                                            <i class="fa fa-user-plus" *ngIf="current_l2_reference == category.key"></i>
+                                                            {{category.key}}
+                                                        </a>
+                                                    </span>
+
+                                                    <!-- button type="button" class="btn m-btn--pill btn-outline-action btn-sm m-btn" (click)='selectCategory("_all_")' >Todos</button-->
+
+
+
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+
+                                    </div>
+
+                                    <hr class="no-margin">
+
+
+                                    <a class=" btn  btn-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--air   x-accordion-btn"
+                                        (click)=changeProfilesAccordion()>
+                                        <i *ngIf="!profilesAccordion_activated" class="la la-angle-down"></i>
+                                        <i *ngIf="profilesAccordion_activated" class="la la-angle-up"></i>
+                                    </a>
+                                    <div class="m-scrollable" id="x-profiles-list-scroll" data-scrollable="true"
+                                        data-scrollbar-shown="true" [ngStyle]="{'height': !profilesAccordion_activated ? currentHeightProfilesList : 'auto'}">
+
+                                        <div class="m-widget4">
+
+
+                                            <span *ngFor="let profile of selectedBusiness.profiles;">
+                                                <span *ngIf="profile.category == current_l2 && profile.index == current_index">
+                                                    <div class="m-widget4__item">
+                                                        <div class="m-widget4__img m-widget4__img--pic">
+                                                            <img src="{{profile.logo}}" alt="">
+                                                        </div>
+                                                        <div class="m-widget4__info">
+                                                            <span class="m-widget4__title m--font-action">
+                                                                {{profile.name}}
+                                                            </span><br>
+                                                            <span class="m-widget4__sub">
+                                                                {{profile.description}}
+                                                            </span>
+                                                        </div>
+                                                        <div class="m-widget4__ext">
+                                                            <button type="button" class="btn m-btn--pill btn-nairu  btn-sm m-btn"
+                                                                (click)="setNewProfile(profile.name,profile.index)">
+                                                                Analizando </button>
+                                                        </div>
+                                                    </div>
+                                                    <hr class="no-margin">
+                                                </span>
+                                            </span>
+
+                                            <span *ngFor="let profile of selectedBusiness.profiles;">
+
+                                                <div class="m-widget4__item" *ngIf="profile.category == current_l2 && profile.index != current_index">
+                                                    <div class="m-widget4__img m-widget4__img--pic">
+                                                        <img src="{{profile.logo}}" alt="">
+                                                    </div>
+                                                    <div class="m-widget4__info">
+                                                        <span class="m-widget4__title">
+                                                            {{profile.name}}
+                                                        </span><br>
+                                                        <span class="m-widget4__sub">
+                                                            {{profile.description}}
+                                                        </span>
+                                                    </div>
+                                                    <div class="m-widget4__ext">
+                                                        <button type="button" class="btn m-btn--pill    btn-secondary m-btn m-btn--label-nairu m-btn--bolder btn-sm"
+                                                            *ngIf="profile.index != current_index" (click)="setNewProfile(profile.name,profile.index)">Analizar</button>
+                                                    </div>
+                                                </div>
+                                            </span>
+
+
+
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                            <!--end::Widget 30-->
+                        </div>
+
+                        <commons-block-ui *ngIf="profileSelectorSectionBlock"></commons-block-ui>
+
+                    </div>
+
+                    <!--end:: Widgets/Profiles-->
+                </div>
+
+
+
+
+
+                <div class="col-xl-2 col-lg-4 col-md-4 col-sm-12   x-home-col">
+                    <div class="m-portlet x-menu-center">
+
+                        <div class="m-portlet__body ">
+                            <!--begin::Widget 29-->
+                            <div class="m-widget29">
+                                <div class="m-nav-grid">
+                                    <div class="m-nav-grid__row">
+                                        <a class="m-nav-grid__item active" (click)="setProfileDetailsOption('listsources')">
+                                            <i class="m-nav-grid__icon flaticon-users"></i>
+                                            <span class="m-nav-grid__text">Top Influenciadores</span>
+                                        </a>
+                                        <a class="m-nav-grid__item disabled" (click)="showMessage()">
+                                            <i class="m-nav-grid__icon flaticon-graphic-1"></i>
+                                            <span class="m-nav-grid__text">Tendencias Mercado</span>
+                                        </a>
+                                        <a class="m-nav-grid__item disabled" (click)="showMessage()">
+                                            <i class="m-nav-grid__icon fa flaticon-pie-chart"></i>
+                                            <span class="m-nav-grid__text">Métricas Avanzadas</span>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--end::Widget 29-->
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-6 offset-xl-0 col-lg-10 offset-lg-1 col-sm-12 x-home-col">
+
+
+                    <div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi" id="x-profile-detail" [ngStyle]="{'opacity': profileDetailsSectionBlock ? 0.8 : 1}"> 
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+
+                                    <h2 class="m-portlet__head-label m-portlet__head-label--nairu ">
+                                        <span>
+                                            <label class="m--margin-top-10 m--regular-font-size-sm1 e-head-label-creative">
+                                                {{currentProfileDetailsOptionName}}
+                                            </label>
+                                        </span>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="m-portlet__head-tools">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-nairu  m-btn--sm x-cursor-no-click">{{currentProfileDetailsTimeRange}}</button>
+                                    <button type="button" class="btn btn-action dropdown-toggle dropdown-toggle-split m-btn--sm"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+
+                                        <a class="dropdown-item" (click)="updateProfileDetailsTimeRange('last7days')">Últimos 7 días</a>
+                                        <a class="dropdown-item" (click)="updateProfileDetailsTimeRange('last30days')">Últimos 30 días</a>
+                                        <a class="dropdown-item" (click)="updateProfileDetailsTimeRange('last3months')">Últimos 3 meses</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" (click)="updateProfileDetailsTimeRange('all')">Completo</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="m-portlet__body x-creative-padding ">
+                            <!-- div class="m-accordion m-accordion--bordered" id="m_accordion_profile_sources" role="tablist">
+
+                                <div class="m-accordion__item">
+                                    <div class="m-accordion__item-head collapsed" role="tab" id="m_accordion_profile_sources_head"
+                                        data-toggle="collapse" href="#m_accordion_profile_sources_body" aria-expanded="false">
+                                        <span class="m-accordion__item-icon"><i class="fa flaticon-search-1"></i></span>
+                                        <span class="m-accordion__item-title">Búsqueda Fuente</span>
+
+                                        <span class="m-accordion__item-mode"></span>
+                                    </div>
+
+                                    <div class="m-accordion__item-body collapse" id="m_accordion_profile_sources_body"
+                                        role="tabpanel" aria-labelledby="m_accordion_profile_sources_head" data-parent="#m_accordion_profile_sources"
+                                        style="">
+                                        <div class="m-accordion__item-content">
+                                            <div class="form-group m-form__group row">
+                                                <label class="col-form-label col-lg-3 col-sm-12">Digits</label>
+                                                <div class="col-lg-9 col-md-9 col-sm-12">
+                                                    <div class="m-input-icon m-input-icon--left">
+                                                        <input type="text" class="form-control m-input" placeholder="Buscar Fuente">
+                                                        <span class="m-input-icon__icon m-input-icon__icon--left"><span><i
+                                                                    class="la la-calculator"></i></span></span>
+                                                    </div>
+                                                    <span class="m-form__help">Please enter only digits</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div-->
+
+                            <a class=" btn  btn-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--air  x-accordion-btn"
+                            (click)=changeProfileDetailsSourcesAccordion()>
+                                <i *ngIf="!profileDetailsSourcesAccordion_activated" class="la la-angle-down"></i>
+                                <i *ngIf="profileDetailsSourcesAccordion_activated" class="la la-angle-up"></i>
+                            </a>
+                            <div class="m-scrollable m-scroller" data-scrollable="true" data-scrollbar-shown="true" [ngStyle]="{'height': !profileDetailsSourcesAccordion_activated ? currentHeightProfileDetailsSourcesList : 'auto'}">
+                                <table class="table table-striped- row-border table-hover table-checkable" id="m_table_home_sources"
+                                    *ngIf="listSourcesProfileFiltered != undefined">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Likes Totales</th>
+                                            <th>Commentarios Totales</th>
+                                            <th>Shares Totales</th>
+
+                                            <th>Fans</th>
+
+                                            <th>Categoría</th>
+                                            
+                                     
+
+                                            <th>Ubicación</th>
+                                            <th>Link</th>
+                                            <th>Página Web</th>
+                                            <th>Acerca</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody >
+                                        <tr role="row" class="odd" *ngFor="let source of listSourcesProfileFiltered;let i = index">
+                                            <td  tabindex="0">
+                                                <div class="m-card-user m-card-user--sm">
+                                                    <div class="m-card-user__pic">
+                                                        <img src="{{source.info.picture}}" class="m--img-rounded m--marginless"
+                                                            alt="photo">
+                                                    </div>
+                                                    <div class="m-card-user__details">
+                                                                 <span class="m-card-user__name" >{{(source.info.name.length < 25) ? (source.info.name) :(source.info.name| slice:0:25)+'...' }}</span> 
+                                                                <a  class="m-card-user__email m-link">Publicaciones: {{source.doc_count}}</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="m--align-center" >
+                                                    <span class="m-list-search__result-item-icon" triggers="hover"   ngbPopover="Total Likes" placement="bottom">
+                                                            <i class="la la-thumbs-o-up m--font-metal"  ></i><br>
+                                                            <small>{{source.totalLikes.value | shortNumber}}</small>
+                                                        </span>
+                                            </td>
+
+                                            <td class="m--align-center" >
+                                                    <span class="m-list-search__result-item-icon" triggers="hover" ngbPopover="Total Comentarios" placement="bottom">
+                                                            <i class="la la-comments-o m--font-metal"  ></i><br>
+                                                            <small>{{source.totalComments.value | shortNumber}}</small>
+                                                        </span>
+                                            </td>
+                                            <td class="m--align-center"  >
+                                                    <span class="m-list-search__result-item-icon"  triggers="hover" ngbPopover="Total Compartidos" placement="bottom">
+                                                            <i class="la la-share-square-o m--font-metal" ></i><br>
+                                                            <small> {{source.totalShares.value | shortNumber}}</small>
+                                                        </span>
+                                            </td>
+                                        <td class="m--align-center" >
+                                                <span class="m-list-search__result-item-icon" triggers="hover"   ngbPopover="Fans" placement="bottom">
+                                                        <i class="la la-users m--font-metal"></i><br>
+                                                        <small> {{source.info.fan_count | shortNumber}}</small>
+                                                    </span>
+                                        </td>
+                               
+                                    <td class="m--align-center"><small >{{source.info.category}}</small></td>
+
+
+                                            <td class="m--align-center">
+                                               
+                                                        <span class="m-card-user__name"><b><small> {{source.info.location.country}}</small></b></span><br>
+                                                        <a class="m-card-user__email m-link"><small>{{source.info.location.city}}</small></a>
+                                               
+                                            </td>
+                                          
+                                            <td><a class="m-link" href="{{source.info.link}}" target="_blank">{{source.info.link | slice:0:100}}</a></td>
+                                            <td><a class="m-link" href="{{source.info.website}}" target="_blank">{{source.info.website}}</a></td>
+                                            <td>{{source.info.about | slice:0:700}}</td>
+
+                                        </tr>
+
+                                    </tbody>
+
+
+
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                        <commons-block-ui *ngIf="profileDetailsSectionBlock"></commons-block-ui>
+                    </div>
+                        
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- End:: Section -->
+
+
+</div>
+

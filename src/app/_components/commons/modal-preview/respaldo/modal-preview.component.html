@@ -1,0 +1,201 @@
+<div class="modal fade" id="m_modal_1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+                <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+            <div class="modal-body">
+
+                <div class="m-widget19">
+                    <div *ngIf="postType=='photo'" class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides">
+                        <img alt="" src="{{postURL}}">
+                        <h3 class="m-widget19__title m--font-light">
+
+                        </h3>
+                        <div class="m-widget19__shadow"></div>
+                    </div>
+                    <div class="m-widget19__content">
+                        <div class="m-widget19__header">
+
+                            <div class="m-widget19__info">
+                                <span class="m-widget19__username">
+
+                                </span>
+                                <br>
+                                <span class="m-widget19__time">
+
+                                </span>
+                            </div>
+                            <div class="m-widget19__stats">
+                                <span class="m-widget19__number x--font-wow">
+
+                                </span>
+                                <span class="m-widget19__comment">
+                                    <div class="m-widget19__stats m--block-inline ">
+                                        <span class="m-widget19__number x--font-wow m--margin-right-45">
+                                            {{postLikes}}
+                                        </span>
+                                        <span class="m-widget19__comment m--margin-right-45">
+                                           Likes
+                                        </span>
+                                    </div>
+                                    <div class="m-widget19__stats m--block-inline ">
+                                        <span class="m-widget19__number x--font-wow m--margin-right-45">
+                                         {{postComments}} 
+                                        </span>
+                                        <span class="m-widget19__comment m--margin-right-45">
+                                         Comentarios  
+                                        </span>
+                                    </div>
+                                    <div class="m-widget19__stats m--block-inline">
+                                        <span class="m-widget19__number x--font-wow">
+                                             {{postShares}}
+                                        </span>
+                                        <span class="m-widget19__comment">
+                                         Compartidos
+                                        </span>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!--begin::Portlet-->
+                        <div class="m-portlet">
+
+                            <div class=" m-demo">
+                                <div class="m-demo__preview">
+                                    <div class="">
+                                        <div class="m-list-timeline__items">
+
+
+
+
+
+
+
+                                            <span *ngFor="let commentTop of commentsDataTop">
+
+                                                <div class="m-list-timeline__item m--margin-bottom-10 m--margin-top-10 ">
+                                                    <div class="row ">
+                                                        <div class="col-lg-7">
+                                                            <a href="https://www.facebook.com/{{commentTop._source.id}}" target="blank" class="m-list-timeline__text " style="text-align: justify">
+                                                                {{(commentTop._source.message.length
+                                                                < 140 ) ? (commentTop._source.message)
+                                                                    :(commentTop._source.message | slice:0:140)+ '...'}} </a>
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <div class="progress x-progress--sm  m--margin-top-5">
+
+                                                                <div placement="bottom" triggers="hover" ngbPopover="Amor  {{commentTop._source.reactionsLove/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry) | percent:'1.0-2'}}  #{{commentTop._source.reactionsLove | shortNumber}}"
+                                                                    class="progress-bar x--bg-fill-love" role="progressbar"
+                                                                    [ngStyle]="{'width': commentTop._source.reactionsLove*100/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry)+'%'}"></div>
+
+                                                                <div placement="bottom" triggers="hover" ngbPopover="Risa {{commentTop._source.reactionsHaha/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry) | percent:'1.0-2'}} #{{commentTop._source.reactionsHaha | shortNumber}}"
+                                                                    class="progress-bar x--bg-fill-haha" role="progressbar"
+                                                                    [ngStyle]="{'width': commentTop._source.reactionsHaha*100/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry)+'%'}"></div>
+
+                                                                <div placement="bottom" triggers="hover" ngbPopover="Sorpresa {{commentTop._source.reactionsWow/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry) | percent:'1.0-2'}} #{{commentTop._source.reactionsWow | shortNumber}}"
+                                                                    class="progress-bar x--bg-fill-wow" role="progressbar"
+                                                                    [ngStyle]="{'width': commentTop._source.reactionsWow*100/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry)+'%'}"></div>
+
+
+                                                                <div placement="bottom" triggers="hover" ngbPopover="Tristeza {{commentTop._source.reactionsSad/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry) | percent:'1.0-2'}} #{{commentTop._source.reactionsSad | shortNumber}}"
+                                                                    class="progress-bar x--bg-fill-sad" role="progressbar"
+                                                                    [ngStyle]="{'width': commentTop._source.reactionsSad*100/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry)+'%'}"></div>
+
+
+                                                                <div placement="bottom" triggers="hover" ngbPopover="Enojo {{commentTop._source.reactionsAngry/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry) | percent:'1.0-2'}} #{{commentTop._source.reactionsAngry | shortNumber}}"
+                                                                    class="progress-bar x--bg-fill-angry" role="progressbar"
+                                                                    [ngStyle]="{'width': commentTop._source.reactionsAngry*100/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry)+'%'}"></div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            {{commentTop._source['@timestamp'] | timeAgo}}
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <!--end::Preview-->
+                        </div>
+                    </div>
+                </div>
+                <div class=" x-masonry">
+                    <div class="x-item" *ngFor="let comment of commentsDataImages ">
+                        <a class="m-widget19 " href="{{comment._source.linkAttachment}}" target="blank">
+                            <div class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides ">
+                                <img alt="" src="{{comment._source.linkAttachment}}">
+
+                                <div class="m-widget19__shadow"></div>
+                            </div>
+                            <div class="m-widget19__content">
+
+                                <div class="col-md-12 m--margin-top-15">
+                                    <a class="m-list-search__result-item m--margin-right-10">
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="la la-thumbs-o-up x--font-wow"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text" triggers="hover" ngbPopover="Me Gusta">
+                                            {{comment._source.totalLikes | shortNumber}}
+                                        </span>
+                                    </a>
+
+                                    <a class="m-list-search__result-item m--margin-right-10">
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="la la-comments-o x--font-wow"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text" triggers="hover" ngbPopover="Comentarios">
+                                            {{comment._source.totalComments | shortNumber }}
+                                        </span>
+                                    </a>
+
+                                </div>
+
+
+                            </div>
+
+                        </a>
+
+
+
+
+                    </div>
+                </div>
+                <div class="row  m--margin-top-45">
+                    <div class="col-md-12 x-center-button">
+                        <a class="x-btn-link btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air  " href="{{postLink}}" target="blank">
+                            <span>
+                                <i class="fa fa-link"></i>
+                                <span>
+                                    Ver enlace
+                                </span>
+                                
+                            </span>
+                        </a>
+
+  
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

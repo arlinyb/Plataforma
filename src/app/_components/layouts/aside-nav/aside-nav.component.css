@@ -1,0 +1,280 @@
+/*Aside nav**********************************************************************/
+    /*active section sidebar*/
+
+    .m-menu__link-badge{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    .m-menu__link-badge .m-badge{
+        min-height: 9px;
+        min-width: 9px;
+    }
+
+p{
+    color: rgba(52,52,52,0.8);
+}
+
+@media (min-width: 993px) {
+    .m-aside-left .m-aside-menu .m-menu__nav .m-menu__link-text.bottom-text-icon {
+        display: table-footer-group !important;
+    }
+    .m-aside-left .m-aside-menu .m-menu__nav .m-menu__item .m-menu__link .m-menu__link-icon {
+        padding-bottom: 10px;
+    }
+    .m-aside-menu .m-menu__nav>.m-menu__item.m-menu__item--bottom-1 {
+        bottom: 21px;
+    }
+    .m-aside-menu .m-menu__nav>.m-menu__item.m-menu__item--bottom-2 {
+        bottom: 86px;
+    }
+    .m-aside-menu .m-menu__nav .m-menu__item--submenu-fullheight .m-menu__subnav{
+        width: 100%!important;
+    }
+   
+    .m-aside-menu .m-menu__nav .m-menu__subnav{
+        width: 110%!important;
+    }
+    .m-aside-menu .m-menu__nav>.m-menu__item.m-menu__item--hover.m-menu__item--submenu-fullheight:not([data-menu-submenu-mode=accordion])>.m-menu__submenu{
+        width: 300px !important;
+    }
+    
+    .m-aside-left--minimize .m-aside-menu .m-menu__nav>.m-menu__item.m-menu__item--hover>.m-menu__submenu .m-menu__subnav>.m-menu__item.m-menu__item--parent>.m-menu__link .m-menu__link-text {
+        font-size: 1rem !important;
+    }
+
+     .x-menu--section-text {
+        font-size: 1.05rem !important;
+    }
+
+}
+
+.x-center-checkbox{
+    margin-top: 8px!important;
+    display: flex; 
+    align-items: center ;
+}
+
+.align-items{
+    display: flex; 
+    align-items: baseline;
+} 
+.x-margin-top--5{
+    margin-top: -5px;
+}
+
+/*progress*/
+.progress-bar{
+    cursor: default;
+}
+.x-progress--lg{
+    height: 20px;
+}
+.x-progress-bar-color-unmark{
+    background-color: #ebedf2;
+}
+
+label{
+    color: rgba(52,52,52,0.8);
+}
+
+
+
+/*aside options*/
+.m-radio--check-bold:hover{
+    color: #eda374!important;
+}
+
+
+.m-menu__subnav li:not(.m-menu__item--parent) .m-menu__link:hover .m-menu__link-text{
+    color: #eda374 !important;
+}
+
+/*general*/
+
+.m-menu__section .m-btn-group {
+    margin-top: -20px;
+    position: absolute;
+    right: 1.2rem;
+}
+
+
+/*remove btn*/
+.x-remove-btn{
+    border: 0px;
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.x-remove-btn.top-sources{
+    position: absolute;
+    left: -6px;
+    top: 48.5px;
+}
+
+.x-remove-btn.list-sources{
+    margin-right: 10px;
+    margin-top: -3px;
+
+}
+
+.x-remove-btn.reactions{
+    margin-left: -10px;
+    margin-right: 10px;
+}
+
+.x-remove-btn i{
+    font-size: 1rem !important;
+}
+
+
+
+
+
+/*sources */
+.m-list-search.x-sources-list .m-list-search__results .m-list-search__result-item .m-list-search__result-item-pic {
+    width: 50px;
+    padding-top: 12px;
+}
+
+.m-list-search.x-sources-list .m-list-search__results .m-list-search__result-item .m-list-search__result-item-pic img{
+    max-width: 40px !important;
+}
+.m-list-search .m-list-search__results .m-list-search__result-item .namefont {
+    margin-right: -55px !important;
+}
+
+
+.x-select-checkbox-aside{
+    width: 102% !important;
+}
+.m-aside-menu .m-menu__nav>.m-menu__item>.m-menu__submenu .m-menu__subnav>.m-menu__section{
+    padding-left: 27px ;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label{
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 19ch !important;
+}
+
+.m-list-search__result-item .m-list-search__result-item-text{
+    font-size: 0.9rem;
+}
+.m-list-search__result-item .m-list-search__result-item-icon{
+    font-size: 0.9rem;
+}
+
+
+/* ng select*/
+.x-input-ng-select{
+    float: right;
+    margin-top: 13px;
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+    background-color:rgba(52,52,52,0.05) !important;
+      color: #333;
+  }
+
+
+/** posts **/
+
+.m-list-search.x-posts-list .m-list-search__results .m-list-search__result-item .namefont{
+    margin-bottom: 0px !important;
+}
+
+.m-list-search.x-posts-list .m-list-search__results .m-list-search__result-item{
+    cursor: pointer !important;
+} 
+
+.m-list-search.x-posts-list .m-list-search__results .m-list-search__result-item .m-list-search__result-item-pic{
+    width: 75px !important;
+    padding-top: 12px !important;
+}
+
+.m-list-search.x-posts-list .m-list-search__results .m-list-search__result-item .m-list-search__result-item-pic img{
+    border-radius:0% !important; 
+    max-width: 65px !important;
+    margin-top: -20px!important
+
+}
+
+.m-list-search.x-posts-list .m-list-search__results .m-list-search__result-item p{
+    font-size: .75rem !important;
+    margin-bottom: 2px;
+
+
+}
+.m-list-search.x-posts-list .m-list-search__results .m-list-search__result-item .x-description-text{
+    margin-right: -15px !important;
+    text-align: justify!important;
+
+
+}
+
+
+
+.x-post-small{
+    margin-top: -5px !important;
+}
+
+a{
+    color: #eda374 ;
+}
+a:hover {
+    color: #eda374 ;
+    opacity: 0.9;
+    text-decoration: underline;
+}
+.x-description-text{
+    color: #9699a2;
+}
+.x-micro-text{
+    font-size: .65rem !important;
+    font-weight: 400;
+}
+
+.m-menu__section .x-progress-sources {
+    height: 3px;
+    margin-top:3px;
+}
+
+
+/*sentiment*/
+.x--slider-section{
+    margin-top: -5px !important;
+}
+
+.x--slider-section .x-slider-selected-sort small{
+    text-decoration: underline;
+    text-underline-position: under;
+    text-shadow: 0.2px 0.2px rgba(52,52,52,0.1);
+    font-size: 0.90rem; 
+}
+.x--slider-section .x-slider-selected-range small{
+
+    text-shadow: 0.2px 0.2px rgba(52,52,52,0.1);
+    font-size: 0.90rem; 
+}
+.x--slider-section .x-slider-selected-range a{
+    
+    padding-top: 6px;
+}
+
+
+.x--slider-section .x-reactions-slider{
+    margin-top: -5px; 
+}
+
+/*reactions*/
+.x-label-sentiment-reaction{
+    padding-top: 8px;
+}
+
+.m-list-pics>a {
+    margin-right: 0rem;
+}
+
+.col-9, .col-xs-7{
+    padding-right: 0px
+}

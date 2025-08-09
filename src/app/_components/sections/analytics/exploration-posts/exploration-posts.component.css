@@ -1,0 +1,43 @@
+/*padding*/
+@media (max-width: 480px){
+    .m-body .m-content {
+        padding: 20px 5px !important;
+    }
+}
+
+/*KPI Text*/
+@media (min-width: 1200px) and (max-width: 1280px){
+    .m-widget24 .m-widget24__item .x--label-hits{
+        font-size: 1.25rem !important;
+    }
+
+}
+
+.m-portlet__body.x-porlet-kpi{
+    padding-bottom: 10px !important;
+}
+
+
+/*Highlights*/
+.ngx-text-highlight{
+    background:yellow !important;
+}
+
+
+/* Format paragraph*/
+.x--text-paragraph {
+    text-align: justify !important;
+      white-space: pre-wrap !important;
+      
+
+}
+
+
+#x-l3-text{
+    margin-left: 16px;
+}
+
+.x-center-list-items{
+  
+    padding-left: 12px;
+}

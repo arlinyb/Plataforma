@@ -1,0 +1,10 @@
+.x-btn-profile {
+    position: absolute;
+    right: 2%;
+}
+
+
+.has-danger .form-control {
+    border-color: #d9534f !important;
+}
+

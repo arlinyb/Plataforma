@@ -1,0 +1,41 @@
+<!--begin::Time Graph -->
+
+<div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi" [ngStyle]="{'opacity': chartSectionBlock ? 0.6 : 1}">
+
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+
+                <span class="m-portlet__head-icon m--hide">
+                    <i class="flaticon-statistics"></i>
+                </span>
+
+
+                <h2 class="m-portlet__head-label m-portlet__head-label--nairu ">
+                    <span>
+                        <label class="m--margin-top-10 m--regular-font-size-sm1 e-head-label-creative">
+                            <a *ngIf="dateArray.length>1" id="x-btn-undo" (click)="undoTimeBase()" class=" btn btn-secondary  m-btn--label-brand m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill "
+                                data-content="Regresar al intervalo anterior" data-placement="right" data-toggle="m-popover">
+                                <i class="la la-mail-reply"></i>
+                            </a>
+
+                            Total Menciones: <b class="m--margin-right-5">{{totalMentions | shortNumber}}</b>
+                        </label>
+                    </span>
+                </h2>
+
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="m-portlet__body" [ngClass]="{'x-nodata-porlet': noData}">
+        <div class="chart-container" #chartContainer></div>
+    </div>
+
+    <commons-block-ui *ngIf="chartSectionBlock"></commons-block-ui>
+
+
+</div>
+<!--end::Time Graph -->

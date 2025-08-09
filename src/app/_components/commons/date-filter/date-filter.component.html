@@ -1,0 +1,40 @@
+<div class="x-data-filter">
+
+
+    <input [(ngModel)]="selectedCustomDate" (ngModelChange)="setCustomDate()" [owlDateTime]="dt5" [selectMode]="'range'"  style="display:none !important">
+    <owl-date-time [pickerMode]="'dialog'" [startAt]="startDateInterval" #dt5 id="#dt5"></owl-date-time>
+
+
+    <a id="m_dashboard_daterangepicker" class="m-subheader__daterange m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push"
+        data-dropdown-toggle="click"  aria-expanded="true" data-redirect="true" >
+            <span class="m-dropdown__toggle m-subheader__daterange-label">
+                <span class="m-subheader__daterange-title"></span>
+                <span class="m-subheader__daterange-date m--font-nairu"></span>
+            </span>
+            <a class="m-dropdown__toggle btn btn-outline-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill m-btn--air">
+                <i class="la la-angle-down"></i>
+            </a>
+            <div class="m-dropdown__wrapper"  >
+                <div class="daterangepicker dropdown-menu">
+                    <div class="ranges">
+                        <ul>
+                            <li (click)="setDateInterval('today')" [ngClass]="{'active':selectedIntervalLabel == 'today'}">Hoy</li>
+                            <!-- <li (click)="setDateInterval('yesterday')" [ngClass]="{'active':selectedIntervalLabel == 'yesterday'}">Ayer</li> -->
+                            <li (click)="setDateInterval('last1day')" [ngClass]="{'active':selectedIntervalLabel == 'last1day'}">Ayer a Hoy</li>
+                            <li (click)="setDateInterval('last7days')" [ngClass]="{'active':selectedIntervalLabel == 'last7days'}">Últimos 7 días</li>
+                            <li (click)="setDateInterval('last30days')" [ngClass]="{'active':selectedIntervalLabel == 'last30days'}">Últimos 30 días</li>
+                            <li (click)="setDateInterval('thismonth')" [ngClass]="{'active':selectedIntervalLabel == 'thismonth'}"> Este mes</li>
+                            <li (click)="setDateInterval('lastmonth')" [ngClass]="{'active':selectedIntervalLabel == 'lastmonth'}">Mes Anterior</li>
+                            <li (click)="setDateInterval('last3months')" [ngClass]="{'active':selectedIntervalLabel == 'last3months'}">Últimos 3 meses</li>
+                            <li (click)="setDateInterval('last6months')" [ngClass]="{'active':selectedIntervalLabel == 'last6months'}">Últimos 6 meses</li>
+                            <li (click)="setDateInterval('last12months')" [ngClass]="{'active':selectedIntervalLabel == 'last12months'}">Últimos 12 meses</li>
+                            <li [owlDateTimeTrigger]="dt5"  [ngClass]="{'active':selectedIntervalLabel == 'custom'}">Rango Personalizado</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    </a>
+
+
+
+</div>

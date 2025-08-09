@@ -1,0 +1,25 @@
+<div class="row m--margin-top-25 " [ngStyle]="{'margin-bottom': screenWidth > 992 ? '45px' :'30px' }" id="x-id-carrousel-terms">
+    <div class="col-xl-12 col-lg-12 col-sm-12 m-row--no-padding" >
+
+
+        <div class="owl-carousel owl-theme x-graph-filter-comp" id="owl-carousel-terms">
+         
+            <div class="item-carrousel" *ngFor="let term of listTermsSearch;let i = index;">
+                    <div class="m-list-badge m-list-badge--light-bg">
+                        <div class="m-list-badge__items">
+                            
+
+                            <ng-template #popContent><small><b>Ejemplo</b></small>: {{term.sample | slice:0:300 }}<br><br><small><b>Reacciones:</b></small> {{term.reach |shortNumber}}<br><small><b>Documentos:</b></small> {{term.doc_count |shortNumber}}</ng-template>
+                            <a *ngIf="term.state != -1" class="m-list-badge__item" (dblclick)="changeStateTerm(i,$event)"  [ngClass]="{'active': term.state == 1, 'x-emoji':term.token.length == 2}" triggers="click" [ngbPopover]="popContent"   placement="bottom" popoverTitle="{{term.origin}}" container="body">{{term.token}}</a>
+                            <a *ngIf="term.state == -1" class="x-list-badge__item-remove " (click)="clearSelectedTermsList()" triggers="hover" ngbPopover="Limpiar Lista Términos"   placement="bottom" container="body"><i class="la la-remove x--font-remove"> </i>                            </a>
+
+                        </div>
+                    </div>
+                </div>
+    
+        </div>
+
+        <commons-block-ui *ngIf="listTermsSectionBlock" [localPositionInfo]="'4%'" ></commons-block-ui>
+    
+    </div>
+</div>

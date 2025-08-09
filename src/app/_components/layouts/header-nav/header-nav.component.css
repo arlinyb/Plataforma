@@ -1,0 +1,132 @@
+/*** active menu option ***/
+
+/*mobile*/
+.m-menu__link.active .m-menu__link-text{
+    color: #ec8264 !important;
+}
+.m-menu__link.active .m-menu__link-icon{
+    color: #ec8264 !important;
+}
+/*desktop*/
+
+
+.m-nav-grid__item.active .m-nav-grid__text{
+    color: #ec8264 !important;
+}
+.m-nav-grid__item.active .m-nav-grid__icon{
+    color: #ec8264 !important;
+}
+
+
+
+
+
+
+
+
+
+.m-card-user .m-card-user__details{
+    padding: 0px;
+}
+.m-nav-grid__item.disabled{
+    /*background-color: rgba(30, 30, 30, .05) !important*/
+    opacity: 0.35;
+}
+
+.m-menu__item.disabled{
+    /*background-color: rgba(30, 30, 30, .05) !important*/
+    opacity: 0.35;
+}
+
+@media (max-width:768px) {
+    .m-dropdown .m-dropdown__wrapper.n-menu-options {
+         margin-left:-20px !important;
+        margin-right:-22px !important;
+    }
+    .m-nav-grid>.m-nav-grid__row>.m-nav-grid__item {
+        padding: 25px 5px 25px 5px !important;
+    }
+}
+@media (min-width:769px) and (max-width:993px){
+    .m-dropdown .m-dropdown__wrapper.n-menu-options {
+        width:242px !important;
+        margin-left:7px !important;
+        margin-right:-12px !important;
+    }
+
+    .m-nav-grid__item{
+        padding: 35px 5px 35px 5px !important;
+    }
+
+
+
+}
+
+/*Close Button*/
+
+#x-btn-close-session{
+    display: block;
+}
+
+/* mobile buttons */
+
+@media (max-width: 992px){
+#m_aside_header_menu_mobile_toggle{
+    margin-right: 13px
+}
+.m-brand {
+   padding-right: 19px;
+}
+    
+
+.m-topbar {
+    padding: 0px 49px;
+}
+
+.m-header--fixed-mobile.m-topbar--on .m-topbar {
+    background: rgba(52, 52, 52, 0.85);
+}
+
+
+.m-brand .m-brand__tools .m-brand__toggler span {
+    background: #fff !important;
+}
+.m-brand .m-brand__tools .m-brand__toggler span::after, .m-brand .m-brand__tools .m-brand__toggler span::before {
+    background: #fff !important;
+}
+.m-brand .m-brand__tools .m-brand__toggler:hover span {
+    color: #fff !important;
+    opacity: 0.8 !important;
+}
+.m-brand .m-brand__tools .m-brand__toggler:hover span::after, .m-brand .m-brand__tools .m-brand__toggler:hover span::before {
+    color: #fff !important;
+    opacity: 0.8 !important;
+}
+.m-brand .m-brand__tools .m-brand__toggler.m-brand__toggler--active span {
+    color: #fff !important;
+    opacity: 0.8 !important;
+}
+.m-brand .m-brand__tools .m-brand__toggler.m-brand__toggler--active span::after, .m-brand .m-brand__tools .m-brand__toggler.m-brand__toggler--active span::before {
+    color: #fff !important;
+    opacity: 0.8 !important;
+}
+
+.m-brand .m-brand__tools .m-brand__icon>i {
+    font-size: 1.4rem !important;
+    color: #fff !important;
+}
+.m-brand .m-brand__tools .m-brand__icon:hover {
+    text-decoration: none
+}
+.m-brand .m-brand__tools .m-brand__icon:hover>i {
+    color: #fff !important;
+    opacity: 0.8 !important;
+
+}
+}
+
+
+.m-nav-grid .m-nav-grid__row .m-nav-grid__item .m-nav-grid__text{
+    color: #343434 ;
+    opacity: 0.6;
+}

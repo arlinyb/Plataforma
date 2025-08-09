@@ -1,0 +1,499 @@
+<div class="m-portlet m-portlet--creative m-portlet--first m-portlet--bordered-semi" [ngStyle]="{'opacity': listSectionBlock ? 0.6 : 1}">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon m--hide">
+                    <i class="flaticon-statistics"></i>
+                </span>
+
+                <div class="form-group m-form__group m--margin-top-50 m--margin-bottom-5">
+                
+                  
+
+                    <div class="input-group">
+                            <tag-input [(ngModel)]='filterSearchTagsLists' (document:click)="filterTermRecover()" [editable]='false' [allowDupes]='true' [maxItems]="30" [secondaryPlaceholder]="'Buscar en fuentes'"  [placeholder]="'+ Término'" (onSelect)="filterTerm($event)" (onAdd)="addFilterTerm($event)"  [onAdding]="onAdding"  (onRemove)="deleteFilterTerm($event)" class="x-tag-input"  ></tag-input>
+
+                        <div class="input-group-append">
+                            <button class="btn  btn-secondary m-btn x-cursor-no-click " type="button">
+                                {{typeSearchFilterName}}
+                            </button>
+                            <button type="button" class="btn btn-action dropdown-toggle dropdown-toggle-split ml-0" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu x-filter-post " x-placement="bottom-start">
+                                <a class="dropdown-item input-cursor" [ngClass]="{'active': typeSearchFilterOption == 'comments'}" (click)="updateTypeFilterSearchName('comments')">
+                                    Comentarios
+                                </a>
+                
+                                <a class="dropdown-item input-cursor" [ngClass]="{'active': typeSearchFilterOption == 'posts'}" (click)="updateTypeFilterSearchName('posts')">
+                                    Publicaciones
+                                </a>
+                                <div class="dropdown-divider" role="separator"></div>
+                                <a class="dropdown-item input-cursor" [ngClass]="{'active': typeSearchFilterOption == 'all'}" (click)="updateTypeFilterSearchName('all')">
+                                    Todo el Contenido
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+
+
+
+                <h2 class="m-portlet__head-label m-portlet__head-label--nairu">
+                    <span>
+                        <span [ngSwitch]="sortTop">
+                            <label *ngSwitchCase="'totalLikes'" class="m--margin-10 m--regular-font-size-sm1">Top Likes</label>
+                            <label *ngSwitchCase="'totalComments'" class="m--margin-10 m--regular-font-size-sm1">Top Comentarios</label>
+                            <label *ngSwitchCase="'totalShares'" class="m--margin-10 m--regular-font-size-sm1">Top Compartidos</label>
+                            <label *ngSwitchCase="'reactionsLove'" class="m--margin-10 m--regular-font-size-sm1">Top Amor</label>
+                            <label *ngSwitchCase="'reactionsHaha'" class="m--margin-10 m--regular-font-size-sm1">Top Risa</label>
+                            <label *ngSwitchCase="'reactionsWow'" class="m--margin-10 m--regular-font-size-sm1">Top Sorpresa</label>
+                            <label *ngSwitchCase="'reactionsSad'" class="m--margin-10 m--regular-font-size-sm1">Top Tristeza</label>
+                            <label *ngSwitchCase="'reactionsAngry'" class="m--margin-10 m--regular-font-size-sm1">Top Enojo</label>
+                        </span>
+
+                        <div *ngIf="listDisplayMode=='list' && jsonQueryFilter != undefined" aria-label="Button group with nested dropdown" class="btn-group d-inline-flex" role="group" >
+                            <button class="m-btn btn btn-secondary " type="button" (click)="updateQty(25)" [ngClass]="{'active':jsonQueryFilter.size===25}">
+                                25
+                            </button>
+                            <button class="m-btn btn btn-secondary" type="button" (click)="updateQty(50)" [ngClass]="{'active':jsonQueryFilter.size ===50}">
+                                50
+                            </button>
+                            <button class="m-btn btn btn-secondary" type="button" (click)="updateQty(100)" [ngClass]="{'active':jsonQueryFilter.size ===100}">
+                                100
+                            </button>
+                            <button class="m-btn btn btn-secondary" type="button" (click)="updateQty(150)" [ngClass]="{'active':jsonQueryFilter.size ===150}">
+                                150
+                            </button>
+                        </div>
+                        <div *ngIf="listDisplayMode=='masonry' && jsonQueryFilter != undefined" aria-label="Button group with nested dropdown" class="btn-group d-inline-flex" role="group" >
+                                <button class="m-btn btn btn-secondary " type="button" (click)="updateQty(50)" [ngClass]="{'active':jsonQueryFilter.size===50}">
+                                    50
+                                </button>
+                                <button class="m-btn btn btn-secondary" type="button" (click)="updateQty(100)" [ngClass]="{'active':jsonQueryFilter.size ===100}">
+                                    100
+                                </button>
+                                <button class="m-btn btn btn-secondary" type="button" (click)="updateQty(150)" [ngClass]="{'active':jsonQueryFilter.size ===150}">
+                                    150
+                                </button>
+                                <button class="m-btn btn btn-secondary" type="button" (click)="updateQty(200)" [ngClass]="{'active':jsonQueryFilter.size ===200}">
+                                    200
+                                </button>
+                            </div>
+                    </span>
+                </h2>
+
+            </div>
+        </div>
+ 
+  
+    </div>
+
+    <div class="row">
+            <div class="m-portlet__head-tools x-porlet-options">
+    
+                    <div class="m-btn-group  btn-group" role="group" *ngIf="!ismobile">
+                          <button triggers="hover" ngbPopover="Lista"  placement="top" popoverTitle="Visualización" [ngClass]="{'active': listDisplayMode=='list','nonActive': listDisplayMode=='masonry'}"   (click)="changePostDisplayMode('list')" type="button" class="m-btn btn btn-outline-action"><i class=" fa 	fa-list-ul"></i></button>
+                          <button triggers="hover" ngbPopover="Multimedia"  placement="top" popoverTitle="Visualización" [ngClass]="{'active': listDisplayMode=='masonry','nonActive': listDisplayMode=='list'}" (click)="changePostDisplayMode('masonry')" type="button" class="m-btn btn btn-outline-action"><i class="	fa  fa-th"></i></button>
+                    </div>
+                    <div class="m-btn-group  btn-group" role="group" *ngIf="ismobile">
+                            <button [ngClass]="{'active': listDisplayMode=='list','nonActive': listDisplayMode=='masonry'}"   (click)="changePostDisplayMode('list')" type="button" class="m-btn btn btn-outline-action"><i class=" fa 	fa-list-ul"></i></button>
+                            <button [ngClass]="{'active': listDisplayMode=='masonry','nonActive': listDisplayMode=='list'}" (click)="changePostDisplayMode('masonry')" type="button" class="m-btn btn btn-outline-action"><i class="	fa  fa-th"></i></button>
+                      </div>
+                </div>
+    </div>
+    <div class="m-portlet__body" *ngIf="comments != undefined">
+
+
+        <commons-graph-filter [localGraphFilterData]="filterData_" (updateQueryFilterEvent)="updateQueryFilter($event)"></commons-graph-filter>
+
+       
+        <div class="m-widget3 m--margin-top-10" *ngIf="listDisplayMode=='list'">
+               
+    
+            <div class="m-widget3__item m--margin-top-20" *ngFor="let comment of comments;let i = index">
+
+      
+
+
+                <div class="row">
+                        <div class="col-xl-8 col-sm-12 col-xs-12">
+
+                        <div class="m-widget3__header" >
+                                <span class="m-nav__link-badge">
+                                        <span class="m-badge ">
+                                            {{i+1}}
+                                        </span>
+                                </span>
+                                <div [ngSwitch]="comment._source.type">
+                                    <div *ngSwitchCase="'attachment'" triggers="hover" ngbPopover="Adjunto"  placement="right" popoverTitle="Tipo Comentario">
+                                        <span class="m-nav__link-badge x-icon-attachment">
+                                            <span class="m-badge x--bg-fill-photo">
+                                                <i class="la la-photo"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+    
+                                    <div *ngSwitchCase="'text'" triggers="hover" ngbPopover="Texto" popoverTitle="Tipo Comentario">
+                                        <span class="m-nav__link-badge x-icon-attachment">
+                                            <span class="m-badge x--bg-fill-status">
+                                                <i class="la la-sticky-note-o"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                
+                                </div>
+
+                               <div class="m-widget3__user-img" >
+                                            <img alt="" class="m-widget3__img" src="{{comment._source.pictureLink}}" >
+                                    </div>
+                            <div class="m-widget3__info"  popoverTitle="Post: {{comment._source.origin}}" triggers="hover" ngbPopover=" {{comment._sourcepostMessage }}">
+                                <a class="m-widget3__username" href="https://www.facebook.com/{{comment._source.id}}" target="_blank">
+                                    {{comment._source.origin | slice:0:23 }}
+                                </a>
+                                <br>
+                                <span class="m-widget3__time">
+                                    {{comment._source['@timestamp'] | timeAgoTimestamp }}
+                                </span>
+                            </div>
+                      
+
+                        </div>
+
+                        <div class="m-widget3__body"  [ngClass]="{'x-widget3__body':comment._source.linkAttachment != null}" >
+
+                            <div *ngIf="comment._source.message != null  && comment._source.message != '' "  >
+                                <div *ngIf="comment.accordion_activated || comment._source.message.length < 200; then thenBlockMsgBody else elseBlockMsgBody"></div>
+                                <ng-template #thenBlockMsgBody>
+                                    <p class="m-widget3__text x--text-paragraph" ngxTextHighlight [content]="comment._source.message" [searchTerm]="highlightTerm"></p>
+                                </ng-template>
+                                <ng-template #elseBlockMsgBody>
+                                    <p class="m-widget3__text x--text-paragraph" ngxTextHighlight   [content]="(comment._source.message | slice:0:200) + ' ...'"
+                                        [searchTerm]="highlightTerm"></p>
+                                </ng-template>
+                            </div>
+                            <div *ngIf="comment._source.message == null || comment._source.message == '' ">
+                                    <p class="m-widget3__text x--text-paragraph"> No se publicó ningún mensaje para este comentario.</p>
+
+                            </div>
+
+                            
+                            <div [ngSwitch]="comment._source.type" >
+                                    <div *ngSwitchCase="'attachment'">
+                                        <span class="m-widget3__status ">
+                                            <div class="x-container "  >
+                                                    <img #img [src]="comment._source.linkAttachment" class="img-thumbnail" (error)="img.src = errorImageBroken(i)"    (click)="openLink(comment._source.linkAttachment)" >
+                                                    <div  class="x-type-attachment" [style.top]="img.offsetHeight>0 ? calculateTopIconHover(img) : '0px' "  (click)="openLink(comment._source.linkAttachment)" >
+                                                            <div *ngIf="!comment._source.linkAttachmentBroken" class="x-type-attachment-element" ><i class="la la-photo"></i></div>
+                                                    </div>
+                                                </div>
+                                        </span>
+                                    </div>
+
+                                    <div *ngSwitchCase="'text'">
+                                        <span class="m-widget3__status x-content-type " *ngIf="comment._source.linkAttachment == null">
+                                            <a   class=" btn btn-action m-btn m-btn--icon m-btn--icon-only m-btn--custom btn-sm m--margin-bottom-10" placement="left" triggers="hover" ngbPopover="Ver Comentario"
+                                            href="https://www.facebook.com/{{comment._source.id}}" target="_blank" >
+                                                <i class="la la-sticky-note-o"></i>
+                                            </a>
+                                        </span>
+                                        <span class="m-widget3__status " *ngIf="comment._source.linkAttachment != null">
+                                            <div class="x-container" >
+                                                <img  #img [src]="comment._source.linkAttachment"  (error)="img.src = errorImageBroken(i)"  class="img-thumbnail" (click)="openLink(comment._source.linkAttachment)"   >
+                                                <div class="x-type-attachment" [style.top]="img.offsetHeight>0 ? calculateTopIconHover(img) : '0px' "   (click)="openLink(comment._source.linkAttachment)" >
+                                                    <div class="x-type-attachment-element" ><i class="la la-sticky-note-o"></i></div>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+    
+                                </div>
+                            
+
+                        </div>
+                        </div>
+                        <div class="col-xl-4 col-sm-12 col-xs-12">
+
+                        <div class="row " >
+                            <div class="col-xl-2 col-sm-12">
+                                <span class="m-widget1__desc">
+                                    <p class="x-bold-p">Métricas:3</p>
+                                </span>
+                            </div>
+                            <div class="col-xl-10 col-sm-12  " [ngClass]="{'m--align-right':screenWidth >= 1200, 'm--align-center' : screenWidth < 1200 }">
+                                <a class="m-list-search__result-item m--margin-right-10">
+                                    <span class="m-list-search__result-item-icon">
+                                        <i class="la la-thumbs-o-up m--font-metal"></i>
+                                    </span>
+                                    <span class="m-list-search__result-item-text" triggers="hover" ngbPopover="Reacciones">
+                                        {{comment._source.totalLikes | shortNumber}}
+                                    </span>
+                                </a>
+                                <a class="m-list-search__result-item m--margin-right-10">
+                                    <span class="m-list-search__result-item-icon">
+                                        <i class="la la-comments-o m--font-metal"></i>
+                                    </span>
+                                    <span class="m-list-search__result-item-text" triggers="hover" ngbPopover="Comentarios">
+                                        {{comment._source.totalComments | shortNumber }}
+                                    </span>
+                                </a>
+                         
+
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) > 0">
+                            <div class="col-xl-4 col-sm-12">
+                                <span class="m-widget1__desc">
+                                    <p class="x-bold-p">Reacciones:</p>
+                                </span>
+
+                            </div>
+
+                            <div class="col-xl-8 col-sm-12">
+
+                                <div *ngIf="(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry)>=100; then thenBlockProgress else elseBlockProgress"></div>
+                                <ng-template #thenBlockProgress>
+                                    <div class="progress  m--margin-bottom-10">
+                                        <div placement="bottom" triggers="hover" ngbPopover="Amor {{comment._source.reactionsLove/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                            class="progress-bar x--bg-fill-love" role="progressbar" [ngStyle]="{'width': comment._source.reactionsLove+'%'}"></div>
+
+                                        <div placement="bottom" triggers="hover" ngbPopover="Risa {{comment._source.reactionsHaha/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                            class="progress-bar x--bg-fill-haha" role="progressbar" [ngStyle]="{'width': comment._source.reactionsHaha+'%'}"></div>
+
+                                        <div placement="bottom" triggers="hover" ngbPopover="Sorpresa {{comment._source.reactionsWow/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                            class="progress-bar x--bg-fill-wow" role="progressbar" [ngStyle]="{'width': comment._source.reactionsWow+'%'}"></div>
+
+
+                                        <div placement="bottom" triggers="hover" ngbPopover="Tristeza {{comment._source.reactionsSad/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                            class="progress-bar x--bg-fill-sad" role="progressbar" [ngStyle]="{'width': comment._source.reactionsSad+'%'}"></div>
+
+
+                                        <div placement="bottom" triggers="hover" ngbPopover="Enojo {{comment._source.reactionsAngry/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                            class="progress-bar x--bg-fill-angry" role="progressbar" [ngStyle]="{'width': comment._source.reactionsAngry+'%'}"></div>
+                                    </div>
+                                </ng-template>
+                                <ng-template #elseBlockProgress>
+                                    <div class="progress x-progress--sm m--margin-bottom-10" >
+                                        <div placement="bottom" triggers="hover" ngbPopover="Amor {{comment._source.reactionsLove/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                            class="progress-bar x--bg-fill-love" role="progressbar" [ngStyle]="{'width': comment._source.reactionsLove*100/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry)+'%'}"></div>
+
+                                        <div placement="bottom" triggers="hover" ngbPopover="Risa {{comment._source.reactionsHaha/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                            class="progress-bar x--bg-fill-haha" role="progressbar" [ngStyle]="{'width': comment._source.reactionsHaha*100/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry)+'%'}"></div>
+
+                                        <div placement="bottom" triggers="hover" ngbPopover="Sorpresa {{comment._source.reactionsWow/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                            class="progress-bar x--bg-fill-wow" role="progressbar" [ngStyle]="{'width': comment._source.reactionsWow*100/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry)+'%'}"></div>
+
+
+                                        <div placement="bottom" triggers="hover" ngbPopover="Tristeza {{comment._source.reactionsSad/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                            class="progress-bar x--bg-fill-sad" role="progressbar" [ngStyle]="{'width': comment._source.reactionsSad*100/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry)+'%'}"></div>
+
+
+                                        <div placement="bottom" triggers="hover" ngbPopover="Enojo {{comment._source.reactionsAngry/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                            class="progress-bar x--bg-fill-angry" role="progressbar" [ngStyle]="{'width': comment._source.reactionsAngry*100/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry)+'%'}"></div>
+                                    </div>
+                                </ng-template>
+
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="row m--margin-bottom-5">
+
+                            <div class="col-xl-2">
+                                <a (click)="accordionElementList(comment._id)" class=" btn btn-outline-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill m-btn--air"
+                                    *ngIf="comment._source.message != null && comment._source.message.length>200">
+                                    <i *ngIf="!comment.accordion_activated" class="la la-angle-down"></i>
+                                    <i *ngIf="comment.accordion_activated" class="la la-angle-up"></i>
+
+                                </a>
+                            </div>
+
+                            <div class="col-xl-10 col-sm-12" [ngClass]="{'m--align-right':screenWidth >= 1200, 'm--align-center' : screenWidth < 1200 }">
+
+                                <div class="m-list-pics m-list-pics--sm m-list-pics-rounded--sm " [ngClass]="{'m--margin-bottom-100': (screenWidth >= 1200) && ((comment._source.reactionsLove+comment._source.reactionsHaha+comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) == 0),'m--margin-bottom-20': (screenWidth < 1200) && ((comment._source.reactionsLove+comment._source.reactionsHaha+comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) == 0) }">
+                                    <a class="m--align-center d-inline-block" triggers="hover" ngbPopover="Amor" *ngIf="comment._source.reactionsLove > 0">
+                                        <img src="assets/images/logo/reactions/love.png" title="">
+                                        <p class="m-list-search__result-item-text x--font-love">
+                                            {{comment._source.reactionsLove | shortNumber }}
+                                        </p>
+                                    </a>
+                                    <a class="m--align-center d-inline-block" triggers="hover" ngbPopover="Risa" *ngIf="comment._source.reactionsHaha > 0" >
+                                        <img src="assets/images/logo/reactions/haha.png" title="">
+                                        <p class="m-list-search__result-item-text x--font-haha">
+                                            {{comment._source.reactionsHaha | shortNumber }}
+                                        </p>
+                                    </a>
+                                    <a class="m--align-center d-inline-block" triggers="hover" ngbPopover="Sorpresa" *ngIf="comment._source.reactionsWow > 0">
+                                        <img src="assets/images/logo/reactions/wow.png" title="">
+                                        <p class="m-list-search__result-item-text x--font-wow">
+                                            {{comment._source.reactionsWow | shortNumber }}
+                                        </p>
+                                    </a>
+                                    <a class="m--align-center d-inline-block" triggers="hover" ngbPopover="Tristeza" *ngIf="comment._source.reactionsSad > 0">
+                                        <img src="assets/images/logo/reactions/sad.png" title="">
+                                        <p class="m-list-search__result-item-text m--font-metal">
+                                            {{comment._source.reactionsSad | shortNumber }}
+                                        </p>
+                                    </a>
+                                    <a class="m--align-center d-inline-block" triggers="hover" ngbPopover="Enojo" *ngIf="comment._source.reactionsAngry > 0">
+                                        <img src="assets/images/logo/reactions/angry.png" title="">
+                                        <p class="m-list-search__result-item-text x--font-angry">
+                                            {{comment._source.reactionsAngry | shortNumber }}
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+
+            </div>           
+
+        </div>
+        <div class="m-widget3 m--margin-top-10" *ngIf="listDisplayMode=='masonry'">
+                <div class="m-widget3__item m--margin-top-20" >
+                        <div class="row" >
+                            
+                            <div class="grid" >
+                                      
+                                <div style="color:white;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis fringilla laoreet. Mauris mattis enim ut felis consectetur, vitae lacinia enim auctor. Aenean vitae fermentum odio. Lorem, nec convallis ligula. Quisque maximus  </div>
+                      
+                                  
+                                <div class="item"  *ngFor="let comment of listWithAttachment;let i = index" >
+                                    <div class="content x-container-masonry" >
+                                      
+                                        <div class="card text-center border-secondary "
+                                        (click)="openLink(comment._source.linkAttachment)"  >
+
+
+                                        <span class="m-nav__link-badge x-badge-mansonry">
+                                                <span class="m-badge ">
+                                                    {{i+1}}
+                                                </span>
+                                        </span>
+                                        <div [ngSwitch]="comment._source.type">
+                                            <div *ngSwitchCase="'photo'" >
+                                                <span class="m-nav__link-badge x-icon-attachment x-icon-masonry">
+                                                    <span class="m-badge x--bg-fill-photo">
+                                                        <i class="la la-photo"></i>
+                                                    </span>
+                                                </span>
+
+                                            </div>
+                                            <div *ngSwitchCase="'video'" >
+                                                <span class="m-nav__link-badge x-icon-attachment x-icon-masonry">
+                                                    <span class="m-badge x--bg-fill-video">
+                                                        <i class="la la-file-movie-o"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div *ngSwitchCase="'link'" >
+                                                <span class="m-nav__link-badge x-icon-attachment x-icon-masonry">
+                                                    <span class="m-badge x--bg-fill-link">
+                                                        <i class="la la-link"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div *ngSwitchCase="'status'" >
+                                                <span class="m-nav__link-badge x-icon-attachment x-icon-masonry">
+                                                    <span class="m-badge x--bg-fill-status">
+                                                        <i class="la la-sticky-note-o"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        
+                                        </div>
+                                            <img class="card-img-top " #img [ngStyle]="{'min-height': '120px'}" (error)="img.src = errorImageBroken(i,img)"  [src]="comment._source.linkAttachment" popoverTitle="Post: {{comment._source.origin}}" triggers="hover" ngbPopover=" {{comment._sourcepostMessage  | slice:0:1024}}" >
+                                            
+                                            <div class="card-footer"  triggers="hover"  ngbPopover="{{comment._source.message}}"  (click)="openLink('https://www.facebook.com/'+comment._source.id)" >
+                                                <a class="m-list-search__result-item x-icon-reaction " *ngIf="comment._source.totalLikes > 0">
+                                                    <span class="m-list-search__result-item-icon">
+                                                        <i class="la la-thumbs-o-up  m--font-metal"></i>
+                                                    </span>
+                                                    <span class="m-list-search__result-item-text ">
+                                                        {{comment._source.totalLikes | shortNumber}}
+                                                    </span>
+                                                </a>
+
+                                                <a class="m-list-search__result-item x-icon-reaction" *ngIf="comment._source.totalComments > 0">
+                                                    <span class="m-list-search__result-item-icon">
+                                                        <i class="la la-comments-o  m--font-metal"></i>
+                                                    </span>
+                                                    <span class="m-list-search__result-item-text ">
+                                                        {{comment._source.totalComments | shortNumber}}
+                                                    </span>
+                                                </a>
+                                                <br>
+                                                <div class="progress x-progress--sm m--margin-bottom-10" *ngIf="(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) > 0 ">
+                                                    <div placement="bottom" triggers="hover" ngbPopover="Amor {{comment._source.reactionsLove/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}} -- {{comment._source.reactionsLove | shortNumber}}"
+                                                        class="progress-bar x--bg-fill-love" role="progressbar" [ngStyle]="{'width': comment._source.reactionsLove*100/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry)+'%'}"></div>
+            
+                                                    <div placement="bottom" triggers="hover" ngbPopover="Risa {{comment._source.reactionsHaha/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                        class="progress-bar x--bg-fill-haha" role="progressbar" [ngStyle]="{'width': comment._source.reactionsHaha*100/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry)+'%'}"></div>
+            
+                                                    <div placement="bottom" triggers="hover" ngbPopover="Sorpresa {{comment._source.reactionsWow/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                        class="progress-bar x--bg-fill-wow" role="progressbar" [ngStyle]="{'width': comment._source.reactionsWow*100/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry)+'%'}"></div>
+            
+            
+                                                    <div placement="bottom" triggers="hover" ngbPopover="Tristeza {{comment._source.reactionsSad/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                        class="progress-bar x--bg-fill-sad" role="progressbar" [ngStyle]="{'width': comment._source.reactionsSad*100/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry)+'%'}"></div>
+            
+            
+                                                    <div placement="bottom" triggers="hover" ngbPopover="Enojo {{comment._source.reactionsAngry/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry) | percent:'1.0-2'}}"
+                                                        class="progress-bar x--bg-fill-angry" role="progressbar" [ngStyle]="{'width': comment._source.reactionsAngry*100/(comment._source.reactionsLove + comment._source.reactionsHaha + comment._source.reactionsWow+comment._source.reactionsSad+comment._source.reactionsAngry)+'%'}"></div>
+                                                </div>
+                                                <small *ngIf="!ismobile">{{comment._source['@timestamp'] | timeAgoTimestamp}}</small>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                                  
+                              </div>
+                        </div>
+                </div>
+        </div>
+        <div class="m-portlet  m-portlet--bordered-semi m-portlet--full-height x-no-info" *ngIf="(comments.length == 0 && listDisplayMode=='list') || ( listWithAttachment.length == 0  && listDisplayMode=='masonry') " >
+            <div class="m-portlet__body">
+                <!--begin::Widget 7-->
+                <div class="m-widget7 " *ngIf="!listSectionBlock">
+                    <div class="m-widget7__desc">
+                        No se han publicado "comentarios" bajo los parametros de busqueda en las fuentes de información disponibles.
+                    </div>
+                    <div class="m-widget7__user">
+
+                        <div class="m-widget7__info">
+
+                            <span class="m-widget7__time">
+                               Búsqueda:  <b>{{searchTerm}}</b>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="m-widget7 " *ngIf="listSectionBlock">
+                        <div class="m-widget7__desc">
+                        </div>
+                        <div class="m-widget7__user">
+                            <div class="m-widget7__info">
+                                <span class="m-widget7__time">
+                                </span>
+                            </div>
+                        </div>
+    
+                </div>
+                <!--end::Widget 7-->
+            </div>
+   </div>
+
+        
+    </div>
+
+    <commons-block-ui *ngIf="listSectionBlock"></commons-block-ui>
+
+</div>
+

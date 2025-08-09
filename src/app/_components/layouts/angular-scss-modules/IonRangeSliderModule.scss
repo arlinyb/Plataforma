@@ -1,0 +1,8 @@
+::ng-deep {
+  .x-reactions-slider .irs-from, .irs-single, .irs-to{
+    background-color: #343434 !important
+  }
+  .irs-from:after, .irs-single:after, .irs-to:after{
+    border-top-color: #343434 !important
+  }
+}

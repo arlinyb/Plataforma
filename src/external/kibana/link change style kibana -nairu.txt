@@ -1,0 +1,16 @@
+
+Todo esto en el HEAD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+Title:
+NAIRU | Data Analytics
+
+
+cambior rel="shortcut icon"
+https://nairu.ai/sections/platform/external/kibana/images/ico/logo.ico
+
+
+
+reemplazar commons.style:
+https://nairu.ai/sections/platform/external/kibana/elastic-kibana-nairu.css
+

@@ -1,0 +1,29 @@
+/*padding*/
+@media (max-width: 480px){
+    .m-body .m-content {
+        padding: 20px 5px !important;
+    }
+}
+
+/*hightlights*/
+
+.ngx-text-highlight{
+    background:yellow !important;
+}
+
+
+/* Format paragraph*/
+.x--text-paragraph {
+    text-align: justify !important;
+      white-space: pre-wrap !important;
+
+}
+
+
+#x-l3-text{
+    margin-left: 16px;
+}
+
+
+
+

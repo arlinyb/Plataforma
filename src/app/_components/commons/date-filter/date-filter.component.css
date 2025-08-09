@@ -1,0 +1,30 @@
+input{
+   /* display: none ;*/
+}
+
+.daterangepicker{
+    display: block;
+    width: 100%;
+    margin-top: -3px;
+}
+
+.m-dropdown .m-dropdown__wrapper{ 
+    z-index: 10;
+}
+.m-dropdown.m-dropdown--align-right.m-dropdown--align-push .m-dropdown__wrapper {
+    margin-right: -15px;
+}
+
+.daterangepicker .ranges li.active {
+    background: #343434;
+    color: #fff;
+    border: 1px solid #343434;
+}
+
+
+.daterangepicker .ranges li:hover{
+    background: #343434;
+    opacity: 0.8;
+    color: #fff;
+
+}

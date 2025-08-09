@@ -1,0 +1,30 @@
+::ng-deep {
+
+  /*ASIDE - Sources*/
+
+  .x-sources-list-exclude .tag__text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    font-size: 0.9em;
+  }
+  .x-sources-list-exclude tag{
+    border-radius: 2px !important;
+    font-weight: 300 !important;
+  }
+
+  .x-sources-list-exclude tag-input{
+    margin-top: -3px;
+  }
+  .x-sources-list-exclude tag-input-form{
+    display: none !important;
+    
+  }
+  .x-sources-list-exclude .ng2-tag-input{
+    border-bottom: 0px !important; 
+  }
+
+  
+ 
+
+}

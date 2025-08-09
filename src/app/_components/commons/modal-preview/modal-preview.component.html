@@ -1,0 +1,501 @@
+<div class="modal fade" id="m_modal_preview_post" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+ aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-dialog-centered modal-full" role="document">
+		<div class="modal-content">
+			<a href="#" class="close" (click)="destryModal()" data-dismiss="modal" aria-hidden="true" class=" btn btn-outline-metal m-btn m-btn--icon btn-sm m-btn--icon-only x-close-btn">
+				<i class="la la-close "></i>
+			</a>
+			<div class="modal-body">
+				<!-- END: Subheader -->
+				<div class="m-content">
+					<div class="row">
+						<div class="col-xl-3 col-lg-5">
+
+
+							<div class="m-portlet m-portlet--bordered-semi m-portlet--full-height">
+
+								<div class="m-portlet__body x-img-preview">
+									<div class="m-widget19">
+
+
+										<div class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides x-container" *ngIf="postAttachmentNull || postType != 'video'"
+										 [style.cursor]="postAttachmentNull ? 'default':'pointer'">
+
+
+											<div [ngSwitch]="postType">
+												<div *ngSwitchCase="'photo'">
+													<span class="m-nav__link-badge x-icon-attachment">
+														<span class="m-badge x--bg-fill-photo">
+															<i class="la la-photo"></i>
+														</span>
+													</span>
+												</div>
+												<div *ngSwitchCase="'link'">
+													<span class="m-nav__link-badge x-icon-attachment">
+														<span class="m-badge x--bg-fill-link">
+															<i class="la la-link"></i>
+														</span>
+													</span>
+												</div>
+												<div *ngSwitchCase="'status'">
+													<span class="m-nav__link-badge x-icon-attachment">
+														<span class="m-badge x--bg-fill-status">
+															<i class="la la-sticky-note-o"></i>
+														</span>
+													</span>
+												</div>
+												<div *ngSwitchCase="'video'">
+
+													<span class="m-nav__link-badge x-icon-attachment">
+														<span class="m-badge x--bg-fill-video">
+															<i class="la la-file-movie-o"></i>
+														</span>
+													</span>
+												</div>
+
+											</div>
+											<div class="m-widget3__user-img x-logo-network-masonry">
+												<img alt="" class="m-widget3__img"  *ngIf="network == 'Facebook'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Ffacebook.png?alt=media&token=2fea8154-6104-4cbe-a4bb-52438990a29c">
+												<img alt="" class="m-widget3__img"  *ngIf="network == 'Instagram'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Finstagram.png?alt=media&token=d39e68ad-9dee-43a6-8dcf-6fa42c3a8049">
+												<img alt="" class="m-widget3__img"  *ngIf="network == 'Twitter'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Ftwitter.png?alt=media&token=9247e57c-34ba-419e-a7b0-4e3c290223fe">
+												<img alt="" class="m-widget3__img"  *ngIf="network == 'TikTok'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Ftiktok.png?alt=media&token=0d3e8161-9eda-4585-9da1-1c72e4a238dc">
+												<img alt="" class="m-widget3__img"  *ngIf="network == 'YouTube'" src="https://firebasestorage.googleapis.com/v0/b/nairu-d4893.appspot.com/o/NAIRU%2Fassets%2Fsocial%20networks%2Fcircle%2Fyoutube.png?alt=media&token=8adc2055-2a7f-49f9-b3cd-056bcf6f1a09">
+											</div>
+											<img #img class="img-preview" src="{{postURL}}" (click)="!postAttachmentNull ? goLink(postURL):false">
+											<h3 class="m-widget19__title m--font-light">
+
+											</h3>
+											<div class="m-widget19__shadow"></div>
+
+											<div class="x-type-attachment" *ngIf="!postAttachmentNull" (click)="!postAttachmentNull ? goLink(postURL):false">
+												<div class="x-type-attachment-element"><i class="la la-expand"></i></div>
+											</div>
+										</div>
+										<div class="m-widget19__pic m-portlet-fit--top m-portlet-fit--sides x-container-video" [ngStyle]="{'min-height': img.offsetHeight+'px'}"
+										 *ngIf="postType == 'video' && !postAttachmentNull">
+											<img [hidden]="!postLink.includes('facebook.com/')" #img class="img-preview img-temp" src="./assets/app/media/img/gif/loading/loading-wide.gif">
+
+											<div *ngIf="postLink.includes('facebook.com/') && !hideFacebookVideoLoading">
+												<fb-video href="{{postLink}}"></fb-video>
+											</div>
+											<div *ngIf="postLink.includes('youtube.com/')">
+												<div [innerHtml]="yt_iframe_html"></div>
+											</div>
+											<div *ngIf="postLink.includes('vimeo.com/')">
+												<div [innerHtml]="vimeo_iframe_html"></div>
+											</div>
+
+										</div>
+
+									</div>
+
+									<div class="m-widget4">
+
+										<div class="m-widget4__item">
+											<div class="m-widget4__ext">
+												<span class="m-widget4__icon x--font-wow">
+													<i class="la la-thumbs-o-up "></i>
+												</span>
+											</div>
+											<div class="m-widget4__info">
+												<span class="m-widget4__text">
+													Likes
+												</span>
+											</div>
+											<div class="m-widget4__ext">
+												<span class="m-widget4__number m--font-nairu">
+													{{postLikes |shortNumber }}
+												</span>
+											</div>
+										</div>
+										<div class="m-widget4__item">
+											<div class="m-widget4__ext">
+												<span class="m-widget4__icon x--font-wow">
+													<i class="la la-comments-o"></i>
+												</span>
+											</div>
+											<div class="m-widget4__info">
+												<span class="m-widget4__text">
+													Comentarios
+												</span>
+											</div>
+											<div class="m-widget4__ext">
+												<span class="m-widget4__number m--font-nairu">
+													{{postComments |shortNumber }}
+												</span>
+											</div>
+										</div>
+										<div class="m-widget4__item" *ngIf="network == 'Facebook' || network == 'TikTok' || network == 'Twitter'">
+											<div class="m-widget4__ext">
+												<span class="m-widget4__icon x--font-wow">
+													<i class="la la-share-square-o"></i>
+												</span>
+											</div>
+											<div class="m-widget4__info">
+												<span class="m-widget4__text">
+													Shares
+												</span>
+											</div>
+											<div class="m-widget4__ext">
+												<span class="m-widget4__number m--font-nairu">
+													{{postShares |shortNumber }}
+												</span>
+											</div>
+										</div>
+										<div class="m-widget4__item"  *ngIf="postType == 'video'">
+											<div class="m-widget4__ext">
+												<span class="m-widget4__icon x--font-wow">
+													<i class="la la-eye"></i>
+												</span>
+											</div>
+											<div class="m-widget4__info">
+												<span class="m-widget4__text">
+													Views
+												</span>
+											</div>
+											<div class="m-widget4__ext">
+												<span class="m-widget4__number m--font-nairu">
+													{{postViews |shortNumber }}
+												</span>
+											</div>
+										</div>
+
+									</div>
+									<div class="m-widget7 " >
+
+										<div class="m-widget7__user" popoverTitle="{{postOrigin}}" triggers="hover" ngbPopover="{{ postDateTime | timeAgoTimestamp }}">
+											<div class="m-widget7__user-img">
+												<img class="m-widget7__img" src="{{postPictureLink}}" alt="">
+											</div>
+											<div class="m-widget7__info" >
+												<span class="m-widget7__username x-text-overflow" >
+													{{(postOrigin.length
+													< 20 ) ? (postOrigin) :(postOrigin | slice:0:20)+ '...' }} </span> <br>
+														<span class="m-widget7__time">
+															<a class="m--font-primary">Fanpage
+																</a>
+														</span>
+											</div>
+										</div>
+										<div class="m-widget7__button">
+											<a class="m-btn m-btn--pill btn btn-action" href="{{postUrlSN}}" target="blank" role="button">Ver Post</a>
+										</div>
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-9 col-lg-7">
+							<div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+								<div class="m-portlet__head">
+									<div class="m-portlet__head-tools">
+										<ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--nairu" role="tablist">
+											<li class="nav-item m-tabs__item">
+												<a class="nav-link m-tabs__link" data-toggle="tab" href="#m_post_datail_tab_1" role="tab">
+													<i class="flaticon-share m--hide"></i>
+													Top Comentarios
+												</a>
+												</li>
+												<li class="nav-item m-tabs__item">
+													<a class="nav-link m-tabs__link" data-toggle="tab" href="#m_post_datail_tab_2" role="tab">
+														Top Imágenes
+													</a>
+												</li>
+												<li class="nav-item m-tabs__item">
+													<a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_post_datail_tab_3" role="tab">
+														Mensaje Post
+													</a>
+												</li>
+												<li class="nav-item m-tabs__item" *ngIf="postType == 'link' && network == 'Facebook'">
+													<a class="nav-link m-tabs__link" data-toggle="tab" href="#m_post_datail_tab_4" role="tab">
+														Link
+													</a>
+												</li>
+												
+												</ul>
+											</div>
+								</div>
+								<div class="tab-content">
+									<div class="tab-pane" id="m_post_datail_tab_1" >
+										<span *ngIf="inputLoaded">
+											<a class=" btn  btn-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--air   x-accordion-btn"
+											 [class.disabled]="postCommentsElements == 0" (click)="getTopComments(5)" [ngClass]="{'active':jsonQueryFilterTopComment_.size==5}">
+												<span class="x-number-label ">5</span>
+											</a>
+
+											<a class=" btn  btn-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--air   x-accordion-btn x-accordion-2"
+											 [class.disabled]="postCommentsElements < 5" (click)="getTopComments(25)" [ngClass]="{'active':jsonQueryFilterTopComment_.size==25}">
+												<span class="x-number-label ">25</span>
+
+											</a>
+
+											<a class=" btn  btn-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--air   x-accordion-btn x-accordion-3"
+											 [class.disabled]="postCommentsElements < 25" (click)="getTopComments(50)" [ngClass]="{'active':jsonQueryFilterTopComment_.size==50}">
+												<span class="x-number-label ">50</span>
+											</a>
+											<a class=" btn  btn-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--air   x-accordion-btn x-accordion-4"
+											 [class.disabled]="postCommentsElements < 50" (click)="getTopComments(100)" [ngClass]="{'active':jsonQueryFilterTopComment_.size==100}">
+												<span class="x-number-label ">100</span>
+											</a>
+										</span>
+										<div class="m-demo">
+											<div class="m-demo__preview">
+												<div class="m-list-timeline__items">
+
+													<span *ngFor="let commentTop of commentsDataTop; let i = index">
+
+														<div class="m-list-timeline__item m--margin-bottom-10 m--margin-top-10 ">
+															<div class="row x-item-comment ">
+																<div class="col-lg-6 x--margin-bottom-3">
+
+																	<a href="https://www.facebook.com/{{commentTop._source.id}}"   triggers="hover" ngbPopover="{{commentTop._source.message | slice:0:600}}" target="blank" class="m-list-timeline__text "
+																	 *ngIf="!commentTop._source.message.startsWith('https://');" style="text-align: justify">
+																		{{(commentTop._source.message.length
+																		< 140 ) ? (commentTop._source.message) :(commentTop._source.message | slice:0:140)+ '...' }} </a>
+																		 <a href="https://www.facebook.com/{{commentTop._source.id}}" target="blank" class="m-list-timeline__text "
+																		 *ngIf="commentTop._source.message.startsWith('https://');" style="text-align: justify">
+																			Link
+																	</a>
+																</div>
+																<div class="col-lg-3 ">
+																	<div class="progress x-progress--sm  m--margin-top-10" *ngIf="commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry > 0">
+
+																		<div placement="bottom" triggers="hover" ngbPopover="Amor  {{commentTop._source.reactionsLove/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry) | percent:'1.0-2'}}  #{{commentTop._source.reactionsLove | shortNumber}}"
+																		 class="progress-bar x--bg-fill-love" role="progressbar" [ngStyle]="{'width': commentTop._source.reactionsLove*100/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry)+'%'}"></div>
+
+																		<div placement="bottom" triggers="hover" ngbPopover="Risa {{commentTop._source.reactionsHaha/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry) | percent:'1.0-2'}} #{{commentTop._source.reactionsHaha | shortNumber}}"
+																		 class="progress-bar x--bg-fill-haha" role="progressbar" [ngStyle]="{'width': commentTop._source.reactionsHaha*100/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry)+'%'}"></div>
+
+																		<div placement="bottom" triggers="hover" ngbPopover="Sorpresa {{commentTop._source.reactionsWow/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry) | percent:'1.0-2'}} #{{commentTop._source.reactionsWow | shortNumber}}"
+																		 class="progress-bar x--bg-fill-wow" role="progressbar" [ngStyle]="{'width': commentTop._source.reactionsWow*100/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry)+'%'}"></div>
+
+
+																		<div placement="bottom" triggers="hover" ngbPopover="Tristeza {{commentTop._source.reactionsSad/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry) | percent:'1.0-2'}} #{{commentTop._source.reactionsSad | shortNumber}}"
+																		 class="progress-bar x--bg-fill-sad" role="progressbar" [ngStyle]="{'width': commentTop._source.reactionsSad*100/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry)+'%'}"></div>
+
+
+																		<div placement="bottom" triggers="hover" ngbPopover="Enojo {{commentTop._source.reactionsAngry/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry) | percent:'1.0-2'}} #{{commentTop._source.reactionsAngry | shortNumber}}"
+																		 class="progress-bar x--bg-fill-angry" role="progressbar" [ngStyle]="{'width': commentTop._source.reactionsAngry*100/(commentTop._source.reactionsLove + commentTop._source.reactionsHaha + commentTop._source.reactionsWow+commentTop._source.reactionsSad+commentTop._source.reactionsAngry)+'%'}"></div>
+
+																	</div>
+																	<div class="m-widget14__legends m--margin-top-10">
+																		<div class="m-widget14__legend" *ngIf="commentTop._source.reactionsLikes > 0">
+																			<span class="m-list-search__result-item-icon">
+																				<i class="la la-thumbs-o-up m--font-metal"></i>
+																			</span>
+																			<span class="m-widget14__legend-text m--font-metal m--margin-left-10">{{commentTop._source.reactionsLikes
+																				| shortNumber
+																				}}</span>
+																		</div>
+																		<div class="m-widget14__legend" *ngIf="commentTop._source.totalComments > 0">
+																			<span class="m-list-search__result-item-icon">
+																				<i class="la la-comments-o m--font-metal"></i>
+																			</span>
+																			<span class="m-widget14__legend-text m--font-metal m--margin-left-10">{{commentTop._source.totalComments
+																				| shortNumber }}</span>
+																		</div>
+
+																	</div>
+																</div>
+																<div class="col-lg-3 x-text-center  m--margin-top-10">
+																	{{commentTop._source['@timestamp'] | timeAgoTimestamp}}
+																</div>
+															</div>
+
+
+
+														</div>
+
+
+													</span>
+												</div>
+												<div class="m-portlet  m-portlet--bordered-semi m-portlet--full-height x-no-info" *ngIf="postCommentsElements==0">
+
+													<div class="m-portlet__body">
+														<!--begin::Widget 7-->
+														<div class="m-widget7 ">
+															<div class="m-widget7__desc">
+																No se han realizado comentarios para este post
+															</div>
+															<div class="m-widget7__user">
+
+																<div class="m-widget7__info">
+
+																	<span class="m-widget7__time">
+																		<b>Post:</b>&nbsp; {{postDateTime | timeAgoTimestamp}}
+																	</span>
+																</div>
+															</div>
+
+														</div>
+														<!--end::Widget 7-->
+													</div>
+												</div>
+
+											</div>
+										</div>
+
+										<!--end:: Widgets/Announcements 2-->
+
+
+									</div>
+									<div class="tab-pane" id="m_post_datail_tab_2">
+
+										<span *ngIf="inputLoaded">
+											<a class=" btn  btn-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--air   x-accordion-btn"
+											 [class.disabled]="commentsDataImages.length == 0" (click)="getCommentsImages(10)" [ngClass]="{'active':jsonQueryFilterCommentImages_.size==10}">
+												<span class="x-number-label ">10</span>
+											</a>
+
+											<a class=" btn  btn-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--air   x-accordion-btn x-accordion-2"
+											 [class.disabled]="commentsDataImages.length < 10" (click)="getCommentsImages(25)" [ngClass]="{'active':jsonQueryFilterCommentImages_.size==25}">
+												<span class="x-number-label ">25</span>
+
+											</a>
+
+											<a class=" btn  btn-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--air   x-accordion-btn x-accordion-3"
+											 [class.disabled]="commentsDataImages.length < 25" (click)="getCommentsImages(50)" [ngClass]="{'active':jsonQueryFilterCommentImages_.size==50}">
+												<span class="x-number-label ">50</span>
+											</a>
+											<a class=" btn  btn-action m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--air   x-accordion-btn x-accordion-4"
+											 [class.disabled]="commentsDataImages.length < 50" (click)="getCommentsImages(100)" [ngClass]="{'active':jsonQueryFilterCommentImages_.size==100}">
+												<span class="x-number-label ">100</span>
+											</a>
+										</span>
+										<div class=" m-demo">
+											<div class="m-demo__preview">
+
+												<div class="card-columns ">
+
+													<div class="card text-center border-secondary mb-3" *ngFor="let comment of commentsDataImages| slice:0:jsonQueryFilterCommentImages_.size;let i = index"
+													 (click)="goLink('https://www.facebook.com/'+comment._source.id)" triggers="hover" ngbPopover="{{comment._source['@timestamp'] | timeAgoTimestamp}}">
+														<img class="card-img-top " #img_comment (load)="verifImageSize(img_comment,i)" (error)="verifImageError(i)"
+														 [src]="comment._source.linkAttachment" alt="Card image cap">
+														<div class="card-footer" *ngIf="comment._source.totalComments > 0 || comment._source.totalLikes > 0">
+															<a class="m-list-search__result-item m--margin-right-20" *ngIf="comment._source.totalLikes > 0">
+																<span class="m-list-search__result-item-icon">
+																	<i class="la la-thumbs-o-up x--font-wow"></i>
+																</span>
+																<span class="m-list-search__result-item-text text-muted ">
+																	{{comment._source.totalLikes | shortNumber}}
+																</span>
+															</a>
+
+															<a class="m-list-search__result-item " *ngIf="comment._source.totalComments > 0">
+																<span class="m-list-search__result-item-icon">
+																	<i class="la la-comments-o x--font-wow"></i>
+																</span>
+																<span class="m-list-search__result-item-text text-muted ">
+																	{{comment._source.totalComments | shortNumber}}
+																</span>
+															</a>
+															<br>
+
+														</div>
+													</div>
+												</div>
+												<div class="m-portlet  m-portlet--bordered-semi m-portlet--full-height x-no-info" *ngIf="commentsDataImages.length==0">
+
+													<div class="m-portlet__body">
+														<!--begin::Widget 7-->
+														<div class="m-widget7 ">
+															<div class="m-widget7__desc">
+																No se han publicado imágenes en los comentarios para este post
+															</div>
+															<div class="m-widget7__user">
+
+																<div class="m-widget7__info">
+
+																	<span class="m-widget7__time">
+																		<b>Post:</b>&nbsp; {{postDateTime | timeAgoTimestamp}}
+																	</span>
+																</div>
+															</div>
+
+														</div>
+														<!--end::Widget 7-->
+													</div>
+												</div>
+
+
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane active" id="m_post_datail_tab_3">
+											<div class="m-portlet  m-portlet--bordered-semi m-portlet--full-height x-no-info" >
+
+
+													<div class="m-portlet__body">
+														<!--begin::Widget 7-->
+														<div class="m-widget7 ">
+															<div class="m-scrollable" id="x-profiles-list-scroll" data-scrollable="true" data-scrollbar-shown="true" style="height:55vh">
+																<div class="m-widget7__desc">
+																	<b *ngIf="postTitle != null && postTitle.length > 30" class="x-menu-center">{{postTitle | slice:0:200}} <br>
+																		<br></b>
+														
+																	<span class="x--text-paragraph">{{postMessage}}</span>
+																</div>
+																<div class="m-widget7__user">
+														
+																	<div class="m-widget7__info">
+														
+																		<br>
+																		<b>Publicado: </b>&nbsp; {{postDateTime | timeAgoTimestamp}} <br><br>
+																		<span *ngIf="currentLogin != 'facebook.com'"><b>Id: </b>&nbsp; {{postId}}</span>
+
+														
+																	</div>
+																</div>
+															</div>
+														</div>
+														<!--end::Widget 7-->
+														</div>
+												</div>
+									</div>
+									<div class="tab-pane" id="m_post_datail_tab_4" *ngIf="postType == 'link' && network == 'Facebook'">
+												<iframe [src]='postLinkSafe'  #x_iframe_link (load)="validateIframeLiskPost(x_iframe_link)" frameborder="0" *ngIf="validateLinkPost"  >
+												</iframe>
+												<div class="m-portlet  m-portlet--bordered-semi m-portlet--full-height x-no-info" *ngIf="!validateLinkPost" >
+
+													<div class="m-portlet__body">
+														<!--begin::Widget 7-->
+														<div class="m-widget7 ">
+															<div class="m-widget7__desc">
+																El dominio de la publicación no permite visualizar el link en la plataforma
+															</div>
+															<div class="m-widget7__user">
+
+																<div class="m-widget7__info">
+
+																	<span class="m-widget7__time">
+																		Accede al link de la publicación mediante el siguiente botón
+
+																		<div class="m-widget7__button m--margin-top-30"><a  class="m-btn m-btn--pill btn btn-action" role="button" target="blank" href="{{postLink}}">Ver Link</a></div>
+
+																	</span>
+																</div>
+															</div>
+
+														</div>
+														<!--end::Widget 7-->
+													</div>
+												</div>
+									</div>
+
+									<commons-block-ui *ngIf="modalSectionBlock"></commons-block-ui>
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

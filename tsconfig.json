@@ -1,0 +1,31 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "strictNullChecks":false,
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "baseUrl": "./",
+    "strict":true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "types": [ "node" ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "module": "es2015"
+  },
+  "include": [
+    "./src", "node_modules/ngx-embed-video"
+    ],
+  "angularCompilerOptions": {
+    "enableIvy": true
+  }
+}

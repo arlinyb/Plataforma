@@ -1,0 +1,44 @@
+.header{
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 40px;
+}
+
+.row{
+  margin-top: 10px;
+}
+
+.error{
+  color: red;
+}
+
+
+
+#x-login-aside-messaje { 
+  flex: 0 auto;
+}
+@media screen and (max-width: 993px) {
+  #x-login-aside-messaje { 
+    display:none; 
+  }
+}
+
+.m-login.m-login--1 .m-grid__item .m-login__info .m-login__section:first-child>a{
+   color:#fff 
+}
+
+.x-btn-forgot {
+  margin: 5px;
+ 
+}
+
+
+.m-loader.m-loader--lg:before {
+  border-top-color: #eda374;
+}
+
+.btn-fb{
+  color: #fff;
+  background-color: #4267B2 !important;
+  border-color: #4267B2 !important;
+}
